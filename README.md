@@ -1,389 +1,708 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Year 9 Financial Literacy - Custom Character Mixer</title>
-    <style>
-        :root {
-            --primary: #059669;
-            --primary-hover: #047857;
-            --background: #f1f5f9;
-            --surface: #ffffff;
-            --text: #0f172a;
-            --text-light: #475569;
-            --border: #cbd5e1;
-            --accent: #d97706;
-            --panel-bg: #f8fafc;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Character Builder — Bank Accounts Activity</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--background);
-            color: var(--text);
-            line-height: 1.5;
-            padding: 2rem 1rem;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-            border-bottom: 2px dashed var(--border);
-            padding-bottom: 1.5rem;
-        }
-
-        h1 {
-            font-size: 2rem;
-            color: #064e3b;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            color: var(--text-light);
-            font-size: 1.05rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr 1.2fr;
-            }
-        }
-
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            height: fit-content;
-        }
-
-        h2 {
-            font-size: 1.15rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.4rem;
-            border-bottom: 2px solid #e2e8f0;
-            color: #0f172a;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .section-break {
-            margin-top: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-            font-size: 0.85rem;
-            color: #334155;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 0.65rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            background-color: #f8fafc;
-            color: var(--text);
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        select:focus, input:focus {
-            border-color: var(--primary);
-            background-color: #fff;
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
-        }
-
-        button {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 0.5rem;
-        }
-
-        button:hover {
-            background-color: var(--primary-hover);
-        }
-
-        /* Profile Sheet Visuals */
-        .profile-header {
-            background: linear-gradient(135deg, #059669, #047857);
-            color: white;
-            padding: 1.25rem;
-            border-radius: 8px;
-            margin-bottom: 1.25rem;
-        }
-
-        .profile-header h3 {
-            font-size: 1.6rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .meta-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin-top: 0.75rem;
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 0.75rem;
-            border-radius: 6px;
-        }
-
-        .panel-guide {
-            margin-top: 1rem;
-        }
-
-        .panel-box {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border);
-            border-left: 5px solid var(--primary);
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-        }
-
-        .panel-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #1e293b;
-            margin-bottom: 0.4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .panel-tag {
-            font-size: 0.7rem;
-            background: #cbd5e1;
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            color: #334155;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .panel-box p {
-            font-size: 0.9rem;
-            color: #334155;
-            line-height: 1.4;
-        }
-
-        .print-btn {
-            background-color: #1e293b;
-            margin-top: 0.5rem;
-        }
-        .print-btn:hover {
-            background-color: #0f172a;
-        }
-
-        @media print {
-            body { background: white; padding: 0; }
-            .card:first-child, .print-btn { display: none; }
-            .grid { grid-template-columns: 1fr; }
-            .card { border: none; box-shadow: none; padding: 0; }
-            .panel-box { page-break-inside: avoid; }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <header>
-        <h1>💸 Custom Character Profile Builder</h1>
-        <p class="subtitle">Select individual pieces to generate a unique worksheet for your comic strip!</p>
-    </header>
-
-    <div class="grid">
-        <!-- LEFT: Independent Selectors -->
-        <div class="card">
-            <h2>Step 1: Character Basics</h2>
-            
-            <div class="form-group">
-                <label for="char-name">Character Name</label>
-                <input type="text" id="char-name" value="Sam">
-            </div>
-
-            <div class="form-group">
-                <label for="select-job">What is their job?</label>
-                <select id="select-job">
-                    <option value="Barista at a busy local café">Café Barista</option>
-                    <option value="Babysitter and dog walker">Babysitter & Dog Walker</option>
-                    <option value="Lawn mowing and neighborhood chores">Lawn Mowing Business</option>
-                    <option value="Retail assistant at a clothing shop">Retail Assistant</option>
-                    <option value="Pizza delivery rider">Pizza Delivery Rider</option>
-                    <option value="Canteen assistant & online craft seller">Canteen & Craft Maker</option>
-                    <option value="Weekend farm hand">Farm Hand</option>
-                    <option value="Swim instructor at the aquatic center">Swim Instructor</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="select-income">Weekly Income Amount</label>
-                <select id="select-income">
-                    <option value="$50 - $100 per week">$50 - $100 per week</option>
-                    <option value="$120 - $160 per week">$120 - $160 per week</option>
-                    <option value="$180 - $220 per week">$180 - $220 per week</option>
-                    <option value="An unpredictable amount depending on the season">Unpredictable (Seasonal)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="select-personality">Money Personality</label>
-                <select id="select-personality">
-                    <option value="Spend now, stress later (Impulsive & loves online shopping)">Spend now, stress later</option>
-                    <option value="Careful saver, but suspicious and doesn't trust the banking system">Careful saver (Suspicious)</option>
-                    <option value="Informal and disorganized (Hides cash in random places)">Informal & disorganized</option>
-                    <option value="Aspirational and style-conscious (Ready to scale up financially)">Aspirational & style-conscious</option>
-                    <option value="Pulled in different directions (Wants to buy fun things but has bills to pay)">Pulled in different directions</option>
-                    <option value="Entrepreneurial (Wants to split business money from personal money)">Entrepreneurial</option>
-                    <option value="Goal-oriented and highly motivated (Saving for something big)">Goal-oriented & motivated</option>
-                </select>
-            </div>
-
-            <h2 class="section-break">Step 2: Comic Plot Elements</h2>
-
-            <div class="form-group">
-                <label for="select-wall">The Big Problem (Panel 2 Wall)</label>
-                <select id="select-wall">
-                    <option value="wants to purchase concert tickets/sneakers online but has no debit card number.">Cannot buy online (No card)</option>
-                    <option value="wants to register for their driver's license or a school trip but the portal won't accept physical cash.">Cannot pay digital portal (Cash refused)</option>
-                    <option value="needs to send money quickly to a friend via app, but only has physical bills.">Cannot transfer money to a mate</option>
-                    <option value="is told by their boss that they cannot get paid unless they provide a BSB and Account number.">Employer requires electronic transfer</option>
-                    <option value="realizes a huge chunk of their saved cash went missing or was taken by a sibling from their hiding spot.">Cash gets lost or stolen</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="select-solution">The Chosen Banking Solution (Panel 4 & 6)</label>
-                <select id="select-solution">
-                    <option value="everyday">Everyday Transaction Account with a Debit Card</option>
-                    <option value="savings">High-Interest Savings Account with 'Savings Buckets'</option>
-                    <option value="combo">Everyday Account linked with an Automated Savings Vault</option>
-                </select>
-            </div>
-
-            <button onclick="buildProfile()">Generate Comic Blueprint</button>
-        </div>
-
-        <!-- RIGHT: Blueprint Output Sheet -->
-        <div class="card">
-            <h2>📋 Student Character Profile Sheet</h2>
-            
-            <div id="profile-output">
-                <div class="profile-header">
-                    <h3 id="out-name">Sam</h3>
-                    <div class="meta-grid">
-                        <div><strong>Job:</strong> <span id="out-job">-</span></div>
-                        <div><strong>Income:</strong> <span id="out-income">-</span></div>
-                        <div style="grid-column: span 2;"><strong>Profile:</strong> <span id="out-personality">-</span></div>
-                    </div>
-                </div>
-
-                <div class="panel-guide">
-                    <div class="panel-box">
-                        <div class="panel-title">Panel 1: Payday! Sort of... <span class="panel-tag">Scene Prompt</span></div>
-                        <p id="p1-text"></p>
-                    </div>
-
-                    <div class="panel-box">
-                        <div class="panel-title">Panel 2: I Just Want to Buy a Thing! <span class="panel-tag">The Conflict</span></div>
-                        <p id="p2-text"></p>
-                    </div>
-
-                    <div class="panel-box">
-                        <div class="panel-title">Panel 4: So Many Account Types?! <span class="panel-tag">The Strategy</span></div>
-                        <p id="p4-text"></p>
-                    </div>
-
-                    <div class="panel-box">
-                        <div class="panel-title">Panel 6: The Manager's Advice <span class="panel-tag">The Fix</span></div>
-                        <p id="p6-text"></p>
-                    </div>
-                </div>
-            </div>
-
-            <button class="print-btn" onclick="window.print()">Print Blueprint for Class</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    const bankingText = {
-        everyday: {
-            p4: "Chooses an Everyday Transaction Account. This lets them safe-keep money, gives them a handy plastic Debit Card, and provides a clear BSB/Account number for digital tracks.",
-            p6: "The manager recommends setting app spending alerts and checking mobile statements weekly to keep track of quick debit purchases before they add up."
-        },
-        savings: {
-            p4: "Chooses a specialized High-Interest Savings Account. They decide to separate their basic cash from their goals by naming custom 'Digital Savings Buckets' in the app.",
-            p6: "The manager explains that the bank safely protects and insures their money, meaning it can't be lost or stolen like hidden room cash—plus it earns interest!"
-        },
-        combo: {
-            p4: "Sets up a linked account pair: an Everyday Account for receiving wages, immediately tethered to a secondary high-incentive Savings Account.",
-            p6: "The manager suggests activating a 'Set & Forget' automatic scheduled transfer. On payday, 20% of their income automatically hops out of sight into the savings vault."
-        }
-    };
-
-    function buildProfile() {
-        // Capture individual field variables
-        const name = document.getElementById('char-name').value || "The Character";
-        const job = document.getElementById('select-job').value;
-        const income = document.getElementById('select-income').value;
-        const personality = document.getElementById('select-personality').value;
-        const wall = document.getElementById('select-wall').value;
-        const solutionKey = document.getElementById('select-solution').value;
-
-        // Apply metadata to header template box
-        document.getElementById('out-name').innerText = name;
-        document.getElementById('out-job').innerText = document.getElementById('select-job').options[document.getElementById('select-job').selectedIndex].text;
-        document.getElementById('out-income').innerText = income.replace(' per week', '/wk');
-        document.getElementById('out-personality').innerText = personality;
-
-        // Populate Panel Blocks cleanly
-        document.getElementById('p1-text').innerText = `${name} gets paid for working as a ${job}. They pull in ${income}. Their money habit style is: ${personality}. In this panel, draw them holding physical money but thinking about where to hide it or how risky it feels to walk around with it.`;
-        
-        document.getElementById('p2-text').innerText = `Frustration points mount! ${name} tries to interact with the modern world, but everything stalls because they ${wall} Draw them looking stressed out while a computer error, a business manager, or a friend says no to their cash bills.`;
-        
-        document.getElementById('p4-text').innerText = `${name} does some research on account variations. ${bankingText[solutionKey].p4} Draw them selecting this account on their phone or app screen because it perfectly answers their lifestyle dilemma.`;
-        
-        document.getElementById('p6-text').innerText = `A professional bank manager sits down with them to map out an upgrade framework. ${bankingText[solutionKey].p6} Draw ${name} happily walking out of the bank or locking their phone with a secure, clear money plan in place!`;
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f5f5f3;
+      --bg-tertiary: #eeede9;
+      --text-primary: #1a1a18;
+      --text-secondary: #5f5e5a;
+      --text-tertiary: #888780;
+      --border: rgba(0,0,0,0.12);
+      --border-strong: rgba(0,0,0,0.22);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --accent: #1a1a18;
+      --green-bg: #E1F5EE;
+      --green-border: #9FE1CB;
+      --green-text: #0F6E56;
+      --blue-bg: #E6F1FB;
+      --blue-border: #B5D4F4;
+      --blue-text: #185FA5;
+      --amber-bg: #FAEEDA;
+      --amber-border: #FAC775;
+      --amber-text: #854F0B;
     }
 
-    // Trigger basic build layout right away upon page view load
-    window.onload = buildProfile;
-</script>
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1e1c;
+        --bg-secondary: #2a2a28;
+        --bg-tertiary: #323230;
+        --text-primary: #f0efeb;
+        --text-secondary: #b4b2a9;
+        --text-tertiary: #888780;
+        --border: rgba(255,255,255,0.1);
+        --border-strong: rgba(255,255,255,0.2);
+        --green-bg: #04342C;
+        --green-border: #0F6E56;
+        --green-text: #9FE1CB;
+        --blue-bg: #042C53;
+        --blue-border: #185FA5;
+        --blue-text: #B5D4F4;
+        --amber-bg: #412402;
+        --amber-border: #854F0B;
+        --amber-text: #FAC775;
+      }
+    }
 
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .page-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .page-header p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 10px;
+    }
+
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 0.5px solid var(--border-strong);
+      font-size: 13px;
+      cursor: pointer;
+      background: var(--bg);
+      color: var(--text-secondary);
+      transition: all 0.12s;
+      user-select: none;
+    }
+
+    .chip:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+
+    .chip.active {
+      background: var(--text-primary);
+      color: var(--bg);
+      border-color: var(--text-primary);
+    }
+
+    .chip .emoji { font-size: 15px; }
+
+    .name-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .name-row input {
+      flex: 1;
+      padding: 9px 13px;
+      font-size: 14px;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border-strong);
+      background: var(--bg);
+      color: var(--text-primary);
+      outline: none;
+    }
+
+    .name-row input:focus {
+      border-color: var(--text-secondary);
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+    }
+
+    .name-row .random-btn {
+      padding: 9px 14px;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border-strong);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .name-row .random-btn:hover { background: var(--bg-tertiary); }
+
+    .income-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .income-row label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .income-row input[type=range] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border-strong);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .income-row input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .income-val {
+      font-size: 14px;
+      font-weight: 500;
+      min-width: 80px;
+      text-align: right;
+      color: var(--text-primary);
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin: 0.25rem 0 1.5rem;
+    }
+
+    /* Preview card */
+    .preview-card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      min-height: 120px;
+      margin-bottom: 1.25rem;
+    }
+
+    .empty-hint {
+      color: var(--text-tertiary);
+      font-size: 13px;
+      padding: 16px 0;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      border: 0.5px solid var(--border);
+    }
+
+    .card-name {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 0.5px solid var(--border);
+      color: var(--text-secondary);
+      background: var(--bg-secondary);
+    }
+
+    .tag.money { color: var(--green-text); background: var(--green-bg); border-color: var(--green-border); }
+    .tag.goal  { color: var(--blue-text);  background: var(--blue-bg);  border-color: var(--blue-border); }
+    .tag.habit { color: var(--amber-text); background: var(--amber-bg); border-color: var(--amber-border); }
+
+    .card-personality {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 0.5px solid var(--border);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .personality-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    /* Actions */
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-main {
+      flex: 1;
+      min-width: 200px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--text-primary);
+      background: var(--text-primary);
+      color: var(--bg);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-main:hover { opacity: 0.85; }
+
+    .btn-sec {
+      padding: 11px 18px;
+      font-size: 14px;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border-strong);
+      background: var(--bg);
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .btn-sec:hover { background: var(--bg-secondary); }
+
+    /* Profile summary */
+    .profile-card {
+      display: none;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .profile-card.show { display: block; }
+
+    .profile-title {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .profile-field {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+      border-bottom: 0.5px solid var(--border);
+      font-size: 13px;
+      gap: 16px;
+    }
+
+    .profile-field:last-child { border-bottom: none; }
+    .profile-field span:first-child { color: var(--text-secondary); white-space: nowrap; }
+    .profile-field span:last-child { color: var(--text-primary); font-weight: 500; text-align: right; }
+
+    /* Copy box */
+    .copy-box {
+      display: none;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .copy-box.show { display: block; }
+
+    .copy-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .copy-box-title {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+    }
+
+    .copy-btn {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border-strong);
+      background: var(--bg);
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .copy-btn:hover { background: var(--bg-tertiary); }
+
+    .copy-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      font-family: monospace;
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+    }
+
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text-primary);
+      color: var(--bg);
+      font-size: 13px;
+      padding: 8px 20px;
+      border-radius: 999px;
+      z-index: 999;
+    }
+
+    .toast.show { display: block; }
+
+    @media (max-width: 500px) {
+      body { padding: 1rem 0.75rem; }
+      .card { padding: 1.1rem; }
+      .btn-main { min-width: 160px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+
+    <div class="page-header">
+      <h1>Character builder</h1>
+      <p>Year 9 financial literacy — bank accounts comic strip activity. Build your character by making selections below, then copy or print your character sheet to use in your comic.</p>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Character name</div>
+      <div class="name-row">
+        <input type="text" id="charName" placeholder="Type a name..." oninput="update()" />
+        <button class="random-btn" onclick="randomName()">Random name</button>
+      </div>
+
+      <div class="section-label">Age</div>
+      <div class="chip-group">
+        <div class="chip" onclick="pick(this,'age','13')"><span class="emoji">🎒</span>13</div>
+        <div class="chip" onclick="pick(this,'age','14')"><span class="emoji">🎒</span>14</div>
+        <div class="chip" onclick="pick(this,'age','15')"><span class="emoji">🎒</span>15</div>
+        <div class="chip" onclick="pick(this,'age','16')"><span class="emoji">🎒</span>16</div>
+        <div class="chip" onclick="pick(this,'age','17')"><span class="emoji">🎒</span>17</div>
+      </div>
+
+      <div class="section-label">Job / income source</div>
+      <div class="chip-group">
+        <div class="chip" onclick="pick(this,'job','Barista')"><span class="emoji">☕</span>Barista</div>
+        <div class="chip" onclick="pick(this,'job','Lawn mowing')"><span class="emoji">🌿</span>Lawn mowing</div>
+        <div class="chip" onclick="pick(this,'job','Babysitter')"><span class="emoji">👶</span>Babysitter</div>
+        <div class="chip" onclick="pick(this,'job','Retail assistant')"><span class="emoji">🛍️</span>Retail assistant</div>
+        <div class="chip" onclick="pick(this,'job','Pizza delivery')"><span class="emoji">🍕</span>Pizza delivery</div>
+        <div class="chip" onclick="pick(this,'job','Swim instructor')"><span class="emoji">🏊</span>Swim instructor</div>
+        <div class="chip" onclick="pick(this,'job','Farm hand')"><span class="emoji">🌾</span>Farm hand</div>
+        <div class="chip" onclick="pick(this,'job','Sells crafts online')"><span class="emoji">🎨</span>Sells crafts online</div>
+        <div class="chip" onclick="pick(this,'job','Dog walker')"><span class="emoji">🐕</span>Dog walker</div>
+        <div class="chip" onclick="pick(this,'job','Canteen assistant')"><span class="emoji">🥗</span>Canteen assistant</div>
+      </div>
+
+      <div class="section-label">How they're paid</div>
+      <div class="chip-group">
+        <div class="chip" onclick="pick(this,'pay','Always cash')"><span class="emoji">💵</span>Always cash</div>
+        <div class="chip" onclick="pick(this,'pay','Mix of cash & transfer')"><span class="emoji">🔀</span>Mix of cash &amp; transfer</div>
+        <div class="chip" onclick="pick(this,'pay','Employer wants to bank transfer')"><span class="emoji">🏦</span>Employer wants to bank transfer</div>
+        <div class="chip" onclick="pick(this,'pay','Irregular / cash in hand')"><span class="emoji">🤝</span>Irregular / cash in hand</div>
+      </div>
+
+      <div class="section-label">Weekly income (approx)</div>
+      <div class="income-row">
+        <label>$</label>
+        <input type="range" min="20" max="300" step="5" value="100" id="incomeSlider" oninput="update()" />
+        <span class="income-val" id="incomeVal">$100 / week</span>
+      </div>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">Money personality</div>
+      <div class="chip-group">
+        <div class="chip" onclick="pick(this,'personality','Impulsive spender')"><span class="emoji">🛒</span>Impulsive spender</div>
+        <div class="chip" onclick="pick(this,'personality','Careful saver')"><span class="emoji">🐷</span>Careful saver</div>
+        <div class="chip" onclick="pick(this,'personality','Goal-driven')"><span class="emoji">🎯</span>Goal-driven</div>
+        <div class="chip" onclick="pick(this,'personality','Disorganised')"><span class="emoji">😅</span>Disorganised</div>
+        <div class="chip" onclick="pick(this,'personality','Entrepreneurial')"><span class="emoji">💡</span>Entrepreneurial</div>
+        <div class="chip" onclick="pick(this,'personality','Sceptical of banks')"><span class="emoji">🤨</span>Sceptical of banks</div>
+      </div>
+
+      <div class="section-label">Saving towards...</div>
+      <div class="chip-group">
+        <div class="chip" onclick="pick(this,'goal','A car')"><span class="emoji">🚗</span>A car</div>
+        <div class="chip" onclick="pick(this,'goal','A gaming PC / console')"><span class="emoji">🎮</span>Gaming PC / console</div>
+        <div class="chip" onclick="pick(this,'goal','An overseas trip')"><span class="emoji">✈️</span>Overseas trip</div>
+        <div class="chip" onclick="pick(this,'goal','A new phone')"><span class="emoji">📱</span>New phone</div>
+        <div class="chip" onclick="pick(this,'goal','Driving lessons')"><span class="emoji">🪪</span>Driving lessons</div>
+        <div class="chip" onclick="pick(this,'goal','Nothing specific yet')"><span class="emoji">🤷</span>Nothing specific</div>
+        <div class="chip" onclick="pick(this,'goal','Helping with family bills')"><span class="emoji">🏠</span>Helping family</div>
+        <div class="chip" onclick="pick(this,'goal','Growing their own business')"><span class="emoji">📈</span>Own business</div>
+      </div>
+
+      <div class="section-label">One key money habit (good or bad)</div>
+      <div class="chip-group">
+        <div class="chip" onclick="pick(this,'habit','Loses track of cash easily')"><span class="emoji">😬</span>Loses track of cash</div>
+        <div class="chip" onclick="pick(this,'habit','Shops online constantly')"><span class="emoji">📦</span>Shops online constantly</div>
+        <div class="chip" onclick="pick(this,'habit','Borrows from friends and forgets to repay')"><span class="emoji">😅</span>Forgets to repay friends</div>
+        <div class="chip" onclick="pick(this,'habit','Tracks every dollar in a notebook')"><span class="emoji">📓</span>Tracks every dollar</div>
+        <div class="chip" onclick="pick(this,'habit','Spends it all on the first day')"><span class="emoji">💸</span>Spends it all at once</div>
+        <div class="chip" onclick="pick(this,'habit','Saves a fixed amount every week')"><span class="emoji">✅</span>Saves a fixed amount</div>
+        <div class="chip" onclick="pick(this,'habit','Never knows their balance')"><span class="emoji">🙈</span>Never checks balance</div>
+      </div>
+
+      <div class="section-label">Character appearance</div>
+      <div class="chip-group">
+        <div class="chip" onclick="pick(this,'avatar','🧑')"><span class="emoji" style="font-size:20px">🧑</span></div>
+        <div class="chip" onclick="pick(this,'avatar','👦')"><span class="emoji" style="font-size:20px">👦</span></div>
+        <div class="chip" onclick="pick(this,'avatar','👧')"><span class="emoji" style="font-size:20px">👧</span></div>
+        <div class="chip" onclick="pick(this,'avatar','🧒')"><span class="emoji" style="font-size:20px">🧒</span></div>
+        <div class="chip" onclick="pick(this,'avatar','🧕')"><span class="emoji" style="font-size:20px">🧕</span></div>
+        <div class="chip" onclick="pick(this,'avatar','👲')"><span class="emoji" style="font-size:20px">👲</span></div>
+        <div class="chip" onclick="pick(this,'avatar','🧔')"><span class="emoji" style="font-size:20px">🧔</span></div>
+        <div class="chip" onclick="pick(this,'avatar','👩')"><span class="emoji" style="font-size:20px">👩</span></div>
+      </div>
+    </div>
+
+    <!-- Live preview -->
+    <div class="section-label" style="padding: 0 2px; margin-bottom:8px;">Your character</div>
+    <div class="preview-card" id="cardPreview">
+      <p class="empty-hint">Start making selections above to build your character...</p>
+    </div>
+
+    <!-- Profile summary -->
+    <div class="profile-card" id="profileCard">
+      <div class="profile-title">Character summary</div>
+      <div id="profileFields"></div>
+    </div>
+
+    <!-- Copy box -->
+    <div class="copy-box" id="copyBox">
+      <div class="copy-box-header">
+        <span class="copy-box-title">Copy for your teacher / worksheet</span>
+        <button class="copy-btn" onclick="copyText()">Copy to clipboard</button>
+      </div>
+      <pre class="copy-text" id="copyText"></pre>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="btn-main" onclick="showCopy()">
+        <i class="ti ti-copy" aria-hidden="true"></i> Copy character summary
+      </button>
+      <button class="btn-main" onclick="window.print()" style="background:var(--bg); color:var(--text-primary);">
+        <i class="ti ti-printer" aria-hidden="true"></i> Print
+      </button>
+      <button class="btn-sec" onclick="resetAll()">Reset</button>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <script>
+    const state = { name:'', age:'', job:'', pay:'', personality:'', goal:'', habit:'', avatar:'🧑', income:100 };
+    const names = ['Jordan','Mia','Dev','Aaliyah','Luca','Priya','Tane','Sophie','Marcus','Anika','Riley','Zara','Kai','Jess','Omar','Bella','Noah','Chloe','Felix','Maya','Sam','Ivy','Leo','Nadia'];
+
+    function randomName() {
+      const n = names[Math.floor(Math.random() * names.length)];
+      document.getElementById('charName').value = n;
+      state.name = n;
+      update();
+    }
+
+    function pick(el, key, val) {
+      document.querySelectorAll(`[onclick*=",'${key}',"]`).forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      state[key] = val;
+      update();
+    }
+
+    function update() {
+      state.name = document.getElementById('charName').value.trim();
+      state.income = parseInt(document.getElementById('incomeSlider').value);
+      document.getElementById('incomeVal').textContent = '$' + state.income + ' / week';
+
+      const preview = document.getElementById('cardPreview');
+      const hasAny = state.name || state.job || state.age;
+
+      if (!hasAny) {
+        preview.innerHTML = '<p class="empty-hint">Start making selections above to build your character...</p>';
+        document.getElementById('profileCard').classList.remove('show');
+        document.getElementById('copyBox').classList.remove('show');
+        return;
+      }
+
+      const displayName = state.name || 'Your character';
+      const sub = [state.age ? 'Age ' + state.age : '', state.job].filter(Boolean).join(' · ');
+
+      let tags = '';
+      if (state.income) tags += `<span class="tag money">💰 $${state.income}/week</span>`;
+      if (state.pay)    tags += `<span class="tag">💳 ${state.pay}</span>`;
+      if (state.goal)   tags += `<span class="tag goal">🎯 ${state.goal}</span>`;
+      if (state.habit)  tags += `<span class="tag habit">⚡ ${state.habit}</span>`;
+
+      const personalityHTML = state.personality
+        ? `<div class="card-personality"><div class="personality-label">Money personality</div>${state.personality}</div>`
+        : '';
+
+      preview.innerHTML = `
+        <div class="card-top">
+          <div class="avatar">${state.avatar}</div>
+          <div style="flex:1">
+            <div class="card-name">${displayName}</div>
+            ${sub ? `<div class="card-sub">${sub}</div>` : ''}
+            <div class="card-tags">${tags}</div>
+          </div>
+        </div>
+        ${personalityHTML}
+      `;
+
+      buildProfile();
+    }
+
+    function buildProfile() {
+      const fields = [
+        ['Name',            state.name         || '—'],
+        ['Age',             state.age          || '—'],
+        ['Job',             state.job          || '—'],
+        ["How they're paid", state.pay         || '—'],
+        ['Weekly income',   state.income ? '$' + state.income + '/week' : '—'],
+        ['Money personality', state.personality || '—'],
+        ['Saving towards',  state.goal         || '—'],
+        ['Key money habit', state.habit        || '—'],
+      ];
+      document.getElementById('profileFields').innerHTML =
+        fields.map(([k,v]) => `<div class="profile-field"><span>${k}</span><span>${v}</span></div>`).join('');
+      document.getElementById('profileCard').classList.add('show');
+    }
+
+    function showCopy() {
+      const n = state.name || '(no name)';
+      const text = `CHARACTER PROFILE — BANK ACCOUNTS ACTIVITY
+==========================================
+Name:              ${state.name || '—'}
+Age:               ${state.age || '—'}
+Job:               ${state.job || '—'}
+How they're paid:  ${state.pay || '—'}
+Weekly income:     $${state.income}/week
+Money personality: ${state.personality || '—'}
+Saving towards:    ${state.goal || '—'}
+Key money habit:   ${state.habit || '—'}
+==========================================`;
+      document.getElementById('copyText').textContent = text;
+      document.getElementById('copyBox').classList.add('show');
+      document.getElementById('copyBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function copyText() {
+      const text = document.getElementById('copyText').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    }
+
+    function resetAll() {
+      Object.keys(state).forEach(k => { state[k] = k === 'avatar' ? '🧑' : k === 'income' ? 100 : ''; });
+      document.getElementById('charName').value = '';
+      document.getElementById('incomeSlider').value = 100;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      document.getElementById('copyBox').classList.remove('show');
+      update();
+    }
+
+    update();
+  </script>
 </body>
 </html>
