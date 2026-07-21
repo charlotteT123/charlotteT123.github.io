@@ -1,431 +1,513 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en-NZ">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Values Card Sort – Young Enterprise</title>
+<title>Kai Cart Ledger — Financial Decision Simulation</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: #f7f7f3;
-    color: #111;
-    padding: 24px 16px;
-    min-height: 100vh;
+  :root{
+    --ink:#14213D;
+    --paper:#F7F5EF;
+    --ledger-green:#2E5339;
+    --ledger-green-light:#e7efe9;
+    --gold:#C99A3F;
+    --rust:#A6403D;
+    --rust-light:#f7e9e8;
+    --charcoal:#232323;
+    --line:#d8d3c4;
+    --font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    --font-body: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
   }
 
-  .container {
-    max-width: 860px;
-    margin: 0 auto;
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--charcoal);
+    font-family:var(--font-body);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:28px 16px 60px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
   }
 
-  .header {
-    margin-bottom: 24px;
+  .rig{
+    width:100%;
+    max-width:640px;
   }
 
-  .header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    margin-bottom: 6px;
+  /* Ticker / header */
+  .ticker{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:10px 10px 0 0;
+    padding:20px 22px 16px;
+    border:1px solid #2a3a63;
+    border-bottom:none;
+  }
+  .ticker-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:12px;
+  }
+  .brand{
+    font-family:var(--font-display);
+    font-size:1.5rem;
+    letter-spacing:0.02em;
+  }
+  .brand span{color:var(--gold);}
+  .balance-label{
+    font-family:var(--font-mono);
+    font-size:0.68rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#9fb0d6;
+    margin-bottom:2px;
+  }
+  .balance{
+    font-family:var(--font-mono);
+    font-size:1.9rem;
+    font-variant-numeric:tabular-nums;
+    text-align:right;
+    transition:color 0.3s ease;
+  }
+  .balance.up{color:#7fd9a0;}
+  .balance.down{color:#e08b87;}
+  .stage-track{
+    display:flex;
+    gap:6px;
+    margin-top:16px;
+  }
+  .stage-chip{
+    flex:1;
+    font-family:var(--font-mono);
+    font-size:0.62rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:7px 6px;
+    border-radius:5px;
+    text-align:center;
+    background:#22305a;
+    color:#8494bd;
+    border:1px solid #2a3a63;
+  }
+  .stage-chip.active{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700;}
+  .stage-chip.done{background:#22305a;color:#7fd9a0;border-color:#3a5a4a;}
+
+  /* Paper card */
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-top:none;
+    border-radius:0 0 10px 10px;
+    padding:30px 28px 26px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
   }
 
-  .header p {
-    font-size: 14px;
-    color: #555;
-    line-height: 1.5;
-    max-width: 560px;
+  .stage-title{
+    font-family:var(--font-display);
+    font-size:1.5rem;
+    margin:0 0 4px;
+    color:var(--ink);
+  }
+  .stage-sub{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:#8a8474;
+    margin-bottom:20px;
+    border-bottom:1px dashed var(--line);
+    padding-bottom:14px;
   }
 
-  .counter-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 12px;
+  .scenario{
+    background:var(--ledger-green-light);
+    border-left:3px solid var(--ledger-green);
+    padding:14px 16px;
+    border-radius:4px;
+    font-size:0.95rem;
+    line-height:1.5;
+    margin-bottom:18px;
   }
 
-  .counter {
-    background: #fff;
-    border: 1.5px solid #ddd;
-    border-radius: 8px;
-    padding: 6px 14px;
-    font-size: 14px;
-    color: #555;
+  .prompt{
+    font-size:1.08rem;
+    line-height:1.5;
+    margin-bottom:18px;
+    color:var(--ink);
+  }
+  .prompt strong{color:var(--ink);}
+
+  .figures{
+    font-family:var(--font-mono);
+    font-size:0.88rem;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:12px 16px;
+    margin-bottom:18px;
+    line-height:1.7;
+  }
+  .figures div{display:flex;justify-content:space-between;}
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  .opt{
+    text-align:left;
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:7px;
+    padding:13px 16px;
+    font-family:var(--font-body);
+    font-size:0.95rem;
+    color:var(--charcoal);
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .opt:hover:not(:disabled){border-color:var(--ink);}
+  .opt:focus-visible{outline:3px solid var(--gold); outline-offset:1px;}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:var(--ledger-green-light);border-color:var(--ledger-green);}
+  .opt.incorrect{background:var(--rust-light);border-color:var(--rust);}
+
+  .feedback{
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:6px;
+    font-size:0.92rem;
+    line-height:1.55;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.correct{background:var(--ledger-green-light);border:1px solid var(--ledger-green);}
+  .feedback.incorrect{background:var(--rust-light);border:1px solid var(--rust);}
+  .feedback-label{
+    font-family:var(--font-mono);
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    display:block;
+    margin-bottom:5px;
+  }
+  .feedback.correct .feedback-label{color:var(--ledger-green);}
+  .feedback.incorrect .feedback-label{color:var(--rust);}
+
+  .nextbtn{
+    margin-top:18px;
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    border-radius:7px;
+    padding:12px 20px;
+    font-family:var(--font-body);
+    font-size:0.92rem;
+    font-weight:600;
+    cursor:pointer;
+    display:none;
+  }
+  .nextbtn.show{display:inline-block;}
+  .nextbtn:hover{background:#1e2c52;}
+  .nextbtn:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+
+  .progress-line{
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    color:#9a9484;
+    margin-top:20px;
+    text-align:right;
   }
 
-  .counter span {
-    font-weight: 600;
-    color: #111;
+  /* End screen */
+  .end{
+    text-align:center;
+    padding:20px 0 4px;
   }
-
-  .counter.full span {
-    color: #3B6D11;
+  .end h2{
+    font-family:var(--font-display);
+    font-size:1.7rem;
+    color:var(--ink);
+    margin-bottom:6px;
   }
-
-  .filter-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+  .end p{line-height:1.6;color:var(--charcoal);}
+  .restart{
+    margin-top:16px;
+    background:transparent;
+    border:1.5px solid var(--ink);
+    color:var(--ink);
+    padding:10px 18px;
+    border-radius:7px;
+    font-family:var(--font-body);
+    font-weight:600;
+    cursor:pointer;
   }
+  .restart:hover{background:var(--ink);color:var(--paper);}
 
-  .filter-btn {
-    padding: 6px 14px;
-    border-radius: 99px;
-    border: 1.5px solid #ddd;
-    background: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    color: #555;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .filter-btn:hover { background: #f0f0ea; }
-  .filter-btn.active { background: #fff; color: #111; border-color: #888; }
-  .filter-btn.active.econ { background: #EAF3DE; color: #27500A; border-color: #639922; }
-  .filter-btn.active.env  { background: #E6F1FB; color: #0C447C; border-color: #378ADD; }
-  .filter-btn.active.soc  { background: #EEEDFE; color: #3C3489; border-color: #534AB7; }
-
-  .board {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 32px;
-  }
-
-  @media (max-width: 560px) {
-    .board { grid-template-columns: 1fr; }
-  }
-
-  .col-header {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #888;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .badge {
-    background: #eee;
-    border-radius: 99px;
-    padding: 2px 9px;
-    font-size: 11px;
-    color: #666;
-  }
-
-  .badge.full {
-    background: #EAF3DE;
-    color: #27500A;
-  }
-
-  .cards-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-height: 100px;
-  }
-
-  .empty-state {
-    border: 1.5px dashed #ddd;
-    border-radius: 10px;
-    padding: 24px;
-    text-align: center;
-    font-size: 13px;
-    color: #aaa;
-  }
-
-  .card {
-    background: #fff;
-    border: 1.5px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 14px 14px 14px 16px;
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-  }
-
-  .card:hover { border-color: #bbb; background: #fafafa; transform: translateY(-1px); }
-
-  .card.econ { border-left: 4px solid #639922; }
-  .card.env  { border-left: 4px solid #378ADD; }
-  .card.soc  { border-left: 4px solid #534AB7; }
-
-  .card.selected {
-    background: #EAF3DE;
-    border-color: #639922;
-  }
-
-  .card.selected .card-name { color: #27500A; }
-  .card.selected .card-cat  { color: #3B6D11; }
-  .card.selected .card-desc { color: #4a7a20; }
-
-  .card-cat {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    color: #999;
-    margin-bottom: 3px;
-  }
-
-  .card.econ .card-cat { color: #3B6D11; }
-  .card.env  .card-cat { color: #185FA5; }
-  .card.soc  .card-cat { color: #3C3489; }
-
-  .card-name {
-    font-size: 16px;
-    font-weight: 600;
-    color: #111;
-    margin-bottom: 3px;
-  }
-
-  .card-desc {
-    font-size: 12px;
-    color: #666;
-    line-height: 1.4;
-  }
-
-  .divider {
-    border: none;
-    border-top: 1.5px solid #e0e0e0;
-    margin: 28px 0;
-  }
-
-  .reflect-section h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    margin-bottom: 6px;
-  }
-
-  .reflect-section > p {
-    font-size: 13px;
-    color: #555;
-    margin-bottom: 20px;
-  }
-
-  .reflect-q {
-    margin-bottom: 16px;
-  }
-
-  .reflect-q label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 6px;
-  }
-
-  .reflect-q textarea {
-    width: 100%;
-    border: 1.5px solid #ddd;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: #111;
-    background: #fff;
-    resize: vertical;
-    min-height: 72px;
-    line-height: 1.5;
-    transition: border-color 0.15s;
-  }
-
-  .reflect-q textarea:focus {
-    outline: none;
-    border-color: #639922;
-  }
-
-  .selected-summary {
-    background: #fff;
-    border: 1.5px solid #ddd;
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 20px;
-    font-size: 13px;
-    color: #555;
-  }
-
-  .selected-summary strong { color: #111; display: block; margin-bottom: 6px; font-size: 13px; }
-
-  .pill {
-    display: inline-block;
-    background: #EAF3DE;
-    border: 1px solid #639922;
-    border-radius: 99px;
-    padding: 2px 10px;
-    margin: 2px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #27500A;
-  }
-
-  .warning {
-    background: #FFF8E6;
-    border: 1.5px solid #EF9F27;
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 13px;
-    color: #633806;
-    margin-bottom: 16px;
-    display: none;
-  }
+  .hidden{display:none;}
 </style>
 </head>
 <body>
-<div class="container">
 
-  <div class="header">
-    <h1>Values Card Sort</h1>
-    <p>As a group, discuss each value and click to add it to your Top 5. You must choose exactly 5 — so talk it through before you commit!</p>
-    <div class="counter-row">
-      <div class="counter" id="counter">Selected: <span id="count">0</span> / 5</div>
+<div class="rig">
+
+  <div class="ticker">
+    <div class="ticker-top">
+      <div>
+        <div class="brand">Kai Cart <span>Ledger</span></div>
+      </div>
+      <div>
+        <div class="balance-label">Cash on hand</div>
+        <div class="balance" id="balance">$1,200</div>
+      </div>
+    </div>
+    <div class="stage-track">
+      <div class="stage-chip" id="chip-0">Setting up the books</div>
+      <div class="stage-chip" id="chip-1">Balancing the ledger</div>
+      <div class="stage-chip" id="chip-2">Making the call</div>
     </div>
   </div>
 
-  <div class="filter-row">
-    <button class="filter-btn active" onclick="setFilter('all', this)">All values</button>
-    <button class="filter-btn econ" onclick="setFilter('econ', this)">Economic</button>
-    <button class="filter-btn env"  onclick="setFilter('env', this)">Environmental</button>
-    <button class="filter-btn soc"  onclick="setFilter('soc', this)">Social</button>
-  </div>
-
-  <div class="board">
-    <div>
-      <div class="col-header">All values <span class="badge" id="pool-badge">20</span></div>
-      <div class="cards-grid" id="pool"></div>
-    </div>
-    <div>
-      <div class="col-header">Our top 5 <span class="badge" id="top5-badge">0</span></div>
-      <div class="cards-grid" id="top5"><div class="empty-state">Click a card to add it here</div></div>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <div class="reflect-section">
-    <h2>Reflect as a group</h2>
-    <p>Once you've agreed on your top 5, answer these questions together.</p>
-
-    <div class="selected-summary" id="summary" style="display:none">
-      <strong>Your top 5 values:</strong>
-      <div id="pills"></div>
-    </div>
-
-    <div class="reflect-q">
-      <label>Why do these 5 values fit your business?</label>
-      <textarea id="q1" placeholder="Write your group's reasoning here…"></textarea>
-    </div>
-    <div class="reflect-q">
-      <label>Name a value you left out — and why it didn't make the cut</label>
-      <textarea id="q2" placeholder="e.g. We chose not to include 'Profit' because our primary goal is community impact…"></textarea>
-    </div>
-    <div class="reflect-q">
-      <label>Which of these will you mention in your mission statement?</label>
-      <textarea id="q3" placeholder="Think about which values best describe who you are and what you do…"></textarea>
-    </div>
-
-    <div class="warning" id="warning">Please select at least one value before sending.</div>
+  <div class="card" id="card">
+    <!-- populated by JS -->
   </div>
 
 </div>
 
 <script>
-const values = [
-  { id:1,  name:'Profit',          cat:'econ', label:'Economic',      desc:'Generating a financial return that keeps the business going' },
-  { id:2,  name:'Growth',          cat:'econ', label:'Economic',      desc:'Expanding reach, revenue, or impact over time' },
-  { id:3,  name:'Innovation',      cat:'econ', label:'Economic',      desc:'Finding new ways to solve problems or create value' },
-  { id:4,  name:'Efficiency',      cat:'econ', label:'Economic',      desc:'Getting the best results with minimal waste of time or money' },
-  { id:5,  name:'Quality',         cat:'econ', label:'Economic',      desc:'Delivering products or services that meet a high standard' },
-  { id:6,  name:'Value for money', cat:'econ', label:'Economic',      desc:'Giving customers a fair return on what they spend' },
-  { id:7,  name:'Kaitiakitanga',   cat:'env',  label:'Environmental', desc:'Guardianship and care for the natural world' },
-  { id:8,  name:'Sustainability',  cat:'env',  label:'Environmental', desc:'Operating in a way that can continue without harming the planet' },
-  { id:9,  name:'Zero waste',      cat:'env',  label:'Environmental', desc:'Minimising materials sent to landfill' },
-  { id:10, name:'Locally sourced', cat:'env',  label:'Environmental', desc:'Using materials and suppliers from close to home' },
-  { id:11, name:'Renewable',       cat:'env',  label:'Environmental', desc:'Choosing energy and materials that can be replenished' },
-  { id:12, name:'Circular design', cat:'env',  label:'Environmental', desc:'Making products that can be reused, repaired, or recycled' },
-  { id:13, name:'Community',       cat:'soc',  label:'Social',        desc:'Contributing positively to the people around us' },
-  { id:14, name:'Whānau',          cat:'soc',  label:'Social',        desc:'Caring for each other and those we serve' },
-  { id:15, name:'Fairness',        cat:'soc',  label:'Social',        desc:'Treating everyone equally and without bias' },
-  { id:16, name:'Transparency',    cat:'soc',  label:'Social',        desc:'Being open and honest about how the business operates' },
-  { id:17, name:'Inclusivity',     cat:'soc',  label:'Social',        desc:'Welcoming people of all backgrounds and identities' },
-  { id:18, name:'Integrity',       cat:'soc',  label:'Social',        desc:'Doing the right thing even when no one is watching' },
-  { id:19, name:'Manaakitanga',    cat:'soc',  label:'Social',        desc:'Showing respect, generosity, and care for others' },
-  { id:20, name:'Empowerment',     cat:'soc',  label:'Social',        desc:'Helping others grow, lead, and reach their potential' },
+const STAGES = [
+  {
+    name: "Setting up the books",
+    sub: "Stage 1 — Know your terms",
+    questions: [
+      {
+        prompt: "Kai Cart pays $600 a week to lease the van, whether it sells one pie or one hundred. What kind of cost is this?",
+        options: ["Variable cost", "Fixed cost", "Gross profit", "Contribution margin"],
+        correct: 1,
+        correctMsg: "Right. A fixed cost stays the same regardless of how much Kai Cart sells — the van lease doesn't change whether they sell 10 pies or 100.",
+        incorrectMsg: "Not quite. Think about whether this cost changes with the number of pies sold. The van lease is charged weekly no matter what — that makes it a fixed cost.",
+        hint: "Fixed costs don't move with sales volume. Variable costs do."
+      },
+      {
+        prompt: "The flour, meat, and packaging for each pie cost $3.50 in total. What kind of cost is this?",
+        options: ["Fixed cost", "Variable cost", "Revenue", "Break-even point"],
+        correct: 1,
+        correctMsg: "Correct — this cost rises and falls directly with how many pies are made, so it's a variable cost.",
+        incorrectMsg: "Have another look: this cost only exists per pie made. If Kai Cart makes zero pies, it pays nothing here — that's the signature of a variable cost.",
+        hint: "Ask: does the total change if Kai Cart sells more or fewer pies?"
+      },
+      {
+        prompt: "Which term describes the point where total revenue exactly equals total costs — no profit, no loss?",
+        options: ["Gross profit margin", "Break-even point", "Net cash flow", "Return on investment"],
+        correct: 1,
+        correctMsg: "Exactly. The break-even point is the sales level where Kai Cart covers all its costs but hasn't started making profit yet.",
+        incorrectMsg: "Not this one. You're looking for the specific term for 'costs = revenue, profit is zero.'",
+        hint: "The word itself is a clue — the business is 'even', not up or down."
+      }
+    ]
+  },
+  {
+    name: "Balancing the ledger",
+    sub: "Stage 2 — Do the maths",
+    questions: [
+      {
+        prompt: "Kai Cart sells pies for $9.00 each. Variable cost per pie is $3.50. Weekly fixed costs are $825. How many pies must Kai Cart sell per week to break even?",
+        figures: [["Selling price per pie", "$9.00"], ["Variable cost per pie", "$3.50"], ["Contribution per pie", "$5.50"], ["Weekly fixed costs", "$825"]],
+        options: ["110 pies", "150 pies", "236 pies", "92 pies"],
+        correct: 1,
+        correctMsg: "Correct. Break-even = fixed costs ÷ contribution per unit = $825 ÷ $5.50 = 150 pies a week.",
+        incorrectMsg: "Try the formula: Break-even (units) = Fixed costs ÷ Contribution per unit. Contribution per unit is selling price minus variable cost ($9.00 − $3.50 = $5.50). Then $825 ÷ $5.50.",
+        hint: "Contribution per pie = selling price − variable cost. Break-even units = fixed costs ÷ contribution per pie."
+      },
+      {
+        prompt: "Last month Kai Cart had sales revenue of $9,000 and cost of goods sold of $3,150. What was the gross profit margin?",
+        figures: [["Sales revenue", "$9,000"], ["Cost of goods sold", "$3,150"], ["Gross profit", "$5,850"]],
+        options: ["35%", "65%", "45%", "58%"],
+        correct: 1,
+        correctMsg: "Correct. Gross profit margin = (Gross profit ÷ Sales revenue) × 100 = ($5,850 ÷ $9,000) × 100 = 65%.",
+        incorrectMsg: "Use: Gross profit margin = (Gross profit ÷ Sales revenue) × 100. Gross profit is $9,000 − $3,150 = $5,850. Then divide by $9,000 and multiply by 100.",
+        hint: "Gross profit = revenue − cost of goods sold. Then divide gross profit by revenue, ×100."
+      }
+    ]
+  },
+  {
+    name: "Making the call",
+    sub: "Stage 3 — Justify a recommendation",
+    questions: [
+      {
+        scenario: "Kai Cart's gross profit margin has held steady at 65% for six months — strong for a food business, where 55–65% is typical. The owner is considering a $4,000 loan to buy a second van and expand to a new suburb.",
+        prompt: "Based on the gross profit margin above, which recommendation is best justified?",
+        options: [
+          "Reject the loan — a 65% margin means the business isn't profitable enough to expand.",
+          "Accept the loan — a strong, stable 65% margin suggests the core business model is profitable, which supports taking on the risk of expansion.",
+          "It's impossible to make a recommendation without knowing the owner's age.",
+          "Accept the loan only if pie prices are lowered first."
+        ],
+        correct: 1,
+        correctMsg: "Well justified. A consistently strong gross profit margin is evidence the core business is financially healthy, which is a reasonable basis to support taking on manageable debt for growth — though a full recommendation would also check cash flow and the loan's repayment terms.",
+        incorrectMsg: "Look again at what a 65% gross profit margin actually signals about the business's underlying profitability before deciding whether it supports expansion.",
+        hint: "A high, steady margin is generally a sign of a healthy core business — how does that relate to the risk of expanding?"
+      },
+      {
+        scenario: "A competing food truck has just parked two streets away, undercutting Kai Cart's pie price by $1.50. The owner is debating whether to match the lower price.",
+        prompt: "Using what you know about contribution per unit, what's the strongest concern with matching the competitor's price?",
+        options: [
+          "There is no concern — lower prices always increase total profit.",
+          "Matching the price would cut contribution per pie from $5.50 to $4.00, meaning far more pies would need to be sold each week just to cover the same fixed costs.",
+          "It only matters if the competitor also sells pies.",
+          "Fixed costs would automatically decrease to compensate."
+        ],
+        correct: 1,
+        correctMsg: "Exactly right — this is the core trade-off. A lower price shrinks contribution per unit, which raises the break-even point, so Kai Cart would need a higher sales volume just to stand still.",
+        incorrectMsg: "Think back to the break-even formula from Stage 2: fixed costs ÷ contribution per unit. What happens to that number if contribution per unit drops?",
+        hint: "If contribution per pie falls, and fixed costs stay the same, what happens to the break-even quantity?"
+      }
+    ]
+  }
 ];
 
-let selected = new Set();
-let currentFilter = 'all';
+let stageIdx = 0;
+let qIdx = 0;
+let balance = 1200;
+let answered = false;
 
-function setFilter(f, btn) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  render();
+const card = document.getElementById('card');
+const balanceEl = document.getElementById('balance');
+
+function fmtMoney(n){
+  return (n<0?'-$':'$') + Math.abs(n).toLocaleString();
 }
 
-function toggle(id) {
-  if (selected.has(id)) {
-    selected.delete(id);
+function updateChips(){
+  for(let i=0;i<3;i++){
+    const chip = document.getElementById('chip-'+i);
+    chip.classList.remove('active','done');
+    if(i < stageIdx) chip.classList.add('done');
+    else if(i === stageIdx) chip.classList.add('active');
+  }
+}
+
+function flashBalance(delta){
+  balance += delta;
+  balanceEl.textContent = fmtMoney(balance);
+  balanceEl.classList.remove('up','down');
+  void balanceEl.offsetWidth;
+  balanceEl.classList.add(delta >= 0 ? 'up' : 'down');
+}
+
+function render(){
+  updateChips();
+  if(stageIdx >= STAGES.length){
+    renderEnd();
+    return;
+  }
+  const stage = STAGES[stageIdx];
+  const q = stage.questions[qIdx];
+  answered = false;
+
+  let html = `<h2 class="stage-title">${stage.name}</h2>
+    <div class="stage-sub">${stage.sub} — Question ${qIdx+1} of ${stage.questions.length}</div>`;
+
+  if(q.scenario){
+    html += `<div class="scenario">${q.scenario}</div>`;
+  }
+
+  html += `<div class="prompt">${q.prompt}</div>`;
+
+  if(q.figures){
+    html += `<div class="figures">`;
+    q.figures.forEach(f => { html += `<div><span>${f[0]}</span><span>${f[1]}</span></div>`; });
+    html += `</div>`;
+  }
+
+  html += `<div class="options" id="options">`;
+  q.options.forEach((opt, i) => {
+    html += `<button class="opt" data-idx="${i}">${opt}</button>`;
+  });
+  html += `</div>`;
+
+  html += `<div class="feedback" id="feedback"></div>`;
+  html += `<button class="nextbtn" id="nextbtn">Continue →</button>`;
+
+  const totalQ = STAGES.reduce((a,s)=>a+s.questions.length,0);
+  const doneQ = STAGES.slice(0,stageIdx).reduce((a,s)=>a+s.questions.length,0) + qIdx;
+  html += `<div class="progress-line">${doneQ+1} of ${totalQ} total questions</div>`;
+
+  card.innerHTML = html;
+
+  document.querySelectorAll('.opt').forEach(btn => {
+    btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.idx)));
+  });
+}
+
+function handleAnswer(idx){
+  if(answered) return;
+  answered = true;
+  const stage = STAGES[stageIdx];
+  const q = stage.questions[qIdx];
+  const buttons = document.querySelectorAll('.opt');
+  const feedback = document.getElementById('feedback');
+  const nextbtn = document.getElementById('nextbtn');
+  const isCorrect = idx === q.correct;
+
+  buttons.forEach((b,i) => {
+    b.disabled = true;
+    if(i === q.correct) b.classList.add('correct');
+    else if(i === idx) b.classList.add('incorrect');
+  });
+
+  if(isCorrect){
+    flashBalance(50);
+    feedback.className = 'feedback show correct';
+    feedback.innerHTML = `<span class="feedback-label">Correct</span>${q.correctMsg}`;
   } else {
-    if (selected.size >= 5) return;
-    selected.add(id);
+    flashBalance(-15);
+    feedback.className = 'feedback show incorrect';
+    feedback.innerHTML = `<span class="feedback-label">Not quite — here's a hint</span>${q.incorrectMsg}<br><br><em>Hint: ${q.hint}</em>`;
+  }
+
+  nextbtn.classList.add('show');
+  nextbtn.addEventListener('click', advance);
+  nextbtn.focus();
+}
+
+function advance(){
+  const stage = STAGES[stageIdx];
+  if(qIdx < stage.questions.length - 1){
+    qIdx++;
+  } else {
+    stageIdx++;
+    qIdx = 0;
   }
   render();
 }
 
-function render() {
-  const poolEl = document.getElementById('pool');
-  const top5El = document.getElementById('top5');
-  const countEl = document.getElementById('count');
-  const counterEl = document.getElementById('counter');
-  const poolBadge = document.getElementById('pool-badge');
-  const top5Badge = document.getElementById('top5-badge');
-  const summary = document.getElementById('summary');
-  const pills = document.getElementById('pills');
-
-  countEl.textContent = selected.size;
-  if (selected.size >= 5) counterEl.classList.add('full'); else counterEl.classList.remove('full');
-
-  const filtered = values.filter(v => currentFilter === 'all' || v.cat === currentFilter);
-  const unselected = filtered.filter(v => !selected.has(v.id));
-  const sel = values.filter(v => selected.has(v.id));
-
-  poolBadge.textContent = unselected.length;
-  top5Badge.textContent = sel.length;
-  if (sel.length >= 5) top5Badge.classList.add('full'); else top5Badge.classList.remove('full');
-
-  poolEl.innerHTML = unselected.length === 0
-    ? '<div class="empty-state">All visible cards selected</div>'
-    : unselected.map(v => cardHTML(v, false)).join('');
-
-  top5El.innerHTML = sel.length === 0
-    ? '<div class="empty-state">Click a card to add it here</div>'
-    : sel.map(v => cardHTML(v, true)).join('');
-
-  if (sel.length > 0) {
-    summary.style.display = 'block';
-    pills.innerHTML = sel.map(v => `<span class="pill">${v.name}</span>`).join('');
-  } else {
-    summary.style.display = 'none';
-  }
-}
-
-function cardHTML(v, sel) {
-  return `<div class="card ${v.cat}${sel ? ' selected' : ''}" onclick="toggle(${v.id})">
-    <div class="card-cat">${v.label}</div>
-    <div class="card-name">${v.name}</div>
-    <div class="card-desc">${v.desc}</div>
-  </div>`;
+function renderEnd(){
+  card.innerHTML = `
+    <div class="end">
+      <h2>Ledger closed 📕</h2>
+      <p>You worked through all three stages — terms, calculations, and a justified business recommendation.<br>
+      Final cash on hand: <strong>${fmtMoney(balance)}</strong></p>
+      <button class="restart" id="restart">Run it again</button>
+    </div>`;
+  document.getElementById('restart').addEventListener('click', () => {
+    stageIdx = 0; qIdx = 0; balance = 1200;
+    balanceEl.textContent = fmtMoney(balance);
+    balanceEl.classList.remove('up','down');
+    render();
+  });
 }
 
 render();
 </script>
+
 </body>
 </html>
