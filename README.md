@@ -1,387 +1,431 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Year 9 Financial Literacy - Custom Character Mixer</title>
-    <style>
-        :root {
-            --primary: #059669;
-            --primary-hover: #047857;
-            --background: #f1f5f9;
-            --surface: #ffffff;
-            --text: #0f172a;
-            --text-light: #475569;
-            --border: #cbd5e1;
-            --accent: #d97706;
-            --panel-bg: #f8fafc;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Values Card Sort – Young Enterprise</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-        }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            background-color: var(--background);
-            color: var(--text);
-            line-height: 1.5;
-            padding: 2rem 1rem;
-        }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f7f7f3;
+    color: #111;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+  }
 
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-            border-bottom: 2px dashed var(--border);
-            padding-bottom: 1.5rem;
-        }
+  .header {
+    margin-bottom: 24px;
+  }
 
-        h1 {
-            font-size: 2rem;
-            color: #064e3b;
-            margin-bottom: 0.5rem;
-        }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
 
-        .subtitle {
-            color: var(--text-light);
-            font-size: 1.05rem;
-        }
+  .header p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    max-width: 560px;
+  }
 
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
+  .counter-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
 
-        @media (min-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr 1.2fr;
-            }
-        }
+  .counter {
+    background: #fff;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 14px;
+    color: #555;
+  }
 
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            height: fit-content;
-        }
+  .counter span {
+    font-weight: 600;
+    color: #111;
+  }
 
-        h2 {
-            font-size: 1.15rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.4rem;
-            border-bottom: 2px solid #e2e8f0;
-            color: #0f172a;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+  .counter.full span {
+    color: #3B6D11;
+  }
 
-        .section-break {
-            margin-top: 1.5rem;
-        }
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: 99px;
+    border: 1.5px solid #ddd;
+    background: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
 
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-            font-size: 0.85rem;
-            color: #334155;
-        }
+  .filter-btn:hover { background: #f0f0ea; }
+  .filter-btn.active { background: #fff; color: #111; border-color: #888; }
+  .filter-btn.active.econ { background: #EAF3DE; color: #27500A; border-color: #639922; }
+  .filter-btn.active.env  { background: #E6F1FB; color: #0C447C; border-color: #378ADD; }
+  .filter-btn.active.soc  { background: #EEEDFE; color: #3C3489; border-color: #534AB7; }
 
-        select, input {
-            width: 100%;
-            padding: 0.65rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            background-color: #f8fafc;
-            color: var(--text);
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.2s;
-        }
+  .board {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
 
-        select:focus, input:focus {
-            border-color: var(--primary);
-            background-color: #fff;
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
-        }
+  @media (max-width: 560px) {
+    .board { grid-template-columns: 1fr; }
+  }
 
-        button {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 0.5rem;
-        }
+  .col-header {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-        button:hover {
-            background-color: var(--primary-hover);
-        }
+  .badge {
+    background: #eee;
+    border-radius: 99px;
+    padding: 2px 9px;
+    font-size: 11px;
+    color: #666;
+  }
 
-        /* Profile Sheet Visuals */
-        .profile-header {
-            background: linear-gradient(135deg, #059669, #047857);
-            color: white;
-            padding: 1.25rem;
-            border-radius: 8px;
-            margin-bottom: 1.25rem;
-        }
+  .badge.full {
+    background: #EAF3DE;
+    color: #27500A;
+  }
 
-        .profile-header h3 {
-            font-size: 1.6rem;
-            margin-bottom: 0.25rem;
-        }
+  .cards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 100px;
+  }
 
-        .meta-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin-top: 0.75rem;
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 0.75rem;
-            border-radius: 6px;
-        }
+  .empty-state {
+    border: 1.5px dashed #ddd;
+    border-radius: 10px;
+    padding: 24px;
+    text-align: center;
+    font-size: 13px;
+    color: #aaa;
+  }
 
-        .panel-guide {
-            margin-top: 1rem;
-        }
+  .card {
+    background: #fff;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 14px 14px 14px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
 
-        .panel-box {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border);
-            border-left: 5px solid var(--primary);
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-        }
+  .card:hover { border-color: #bbb; background: #fafafa; transform: translateY(-1px); }
 
-        .panel-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #1e293b;
-            margin-bottom: 0.4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+  .card.econ { border-left: 4px solid #639922; }
+  .card.env  { border-left: 4px solid #378ADD; }
+  .card.soc  { border-left: 4px solid #534AB7; }
 
-        .panel-tag {
-            font-size: 0.7rem;
-            background: #cbd5e1;
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            color: #334155;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
+  .card.selected {
+    background: #EAF3DE;
+    border-color: #639922;
+  }
 
-        .panel-box p {
-            font-size: 0.9rem;
-            color: #334155;
-            line-height: 1.4;
-        }
+  .card.selected .card-name { color: #27500A; }
+  .card.selected .card-cat  { color: #3B6D11; }
+  .card.selected .card-desc { color: #4a7a20; }
 
-        .print-btn {
-            background-color: #1e293b;
-            margin-top: 0.5rem;
-        }
-        .print-btn:hover {
-            background-color: #0f172a;
-        }
+  .card-cat {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 3px;
+  }
 
-        @media print {
-            body { background: white; padding: 0; }
-            .card:first-child, .print-btn { display: none; }
-            .grid { grid-template-columns: 1fr; }
-            .card { border: none; box-shadow: none; padding: 0; }
-            .panel-box { page-break-inside: avoid; }
-        }
-    </style>
+  .card.econ .card-cat { color: #3B6D11; }
+  .card.env  .card-cat { color: #185FA5; }
+  .card.soc  .card-cat { color: #3C3489; }
+
+  .card-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 3px;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1.5px solid #e0e0e0;
+    margin: 28px 0;
+  }
+
+  .reflect-section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .reflect-section > p {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .reflect-q {
+    margin-bottom: 16px;
+  }
+
+  .reflect-q label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+  }
+
+  .reflect-q textarea {
+    width: 100%;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #111;
+    background: #fff;
+    resize: vertical;
+    min-height: 72px;
+    line-height: 1.5;
+    transition: border-color 0.15s;
+  }
+
+  .reflect-q textarea:focus {
+    outline: none;
+    border-color: #639922;
+  }
+
+  .selected-summary {
+    background: #fff;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .selected-summary strong { color: #111; display: block; margin-bottom: 6px; font-size: 13px; }
+
+  .pill {
+    display: inline-block;
+    background: #EAF3DE;
+    border: 1px solid #639922;
+    border-radius: 99px;
+    padding: 2px 10px;
+    margin: 2px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #27500A;
+  }
+
+  .warning {
+    background: #FFF8E6;
+    border: 1.5px solid #EF9F27;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #633806;
+    margin-bottom: 16px;
+    display: none;
+  }
+</style>
 </head>
 <body>
-
 <div class="container">
-    <header>
-        <h1>💸 Custom Character Profile Builder</h1>
-        <p class="subtitle">Select individual pieces to generate a unique worksheet for your comic strip!</p>
-    </header>
 
-    <div class="grid">
-        <!-- LEFT: Independent Selectors -->
-        <div class="card">
-            <h2>Step 1: Character Basics</h2>
-            
-            <div class="form-group">
-                <label for="char-name">Character Name</label>
-                <input type="text" id="char-name" value="Sam">
-            </div>
-
-            <div class="form-group">
-                <label for="select-job">What is their job?</label>
-                <select id="select-job">
-                    <option value="Barista at a busy local café">Café Barista</option>
-                    <option value="Babysitter and dog walker">Babysitter & Dog Walker</option>
-                    <option value="Lawn mowing and neighborhood chores">Lawn Mowing Business</option>
-                    <option value="Retail assistant at a clothing shop">Retail Assistant</option>
-                    <option value="Pizza delivery rider">Pizza Delivery Rider</option>
-                    <option value="Canteen assistant & online craft seller">Canteen & Craft Maker</option>
-                    <option value="Weekend farm hand">Farm Hand</option>
-                    <option value="Swim instructor at the aquatic center">Swim Instructor</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="select-income">Weekly Income Amount</label>
-                <select id="select-income">
-                    <option value="$50 - $100 per week">$50 - $100 per week</option>
-                    <option value="$120 - $160 per week">$120 - $160 per week</option>
-                    <option value="$180 - $220 per week">$180 - $220 per week</option>
-                    <option value="An unpredictable amount depending on the season">Unpredictable (Seasonal)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="select-personality">Money Personality</label>
-                <select id="select-personality">
-                    <option value="Spend now, stress later (Impulsive & loves online shopping)">Spend now, stress later</option>
-                    <option value="Careful saver, but suspicious and doesn't trust the banking system">Careful saver (Suspicious)</option>
-                    <option value="Informal and disorganized (Hides cash in random places)">Informal & disorganized</option>
-                    <option value="Aspirational and style-conscious (Ready to scale up financially)">Aspirational & style-conscious</option>
-                    <option value="Pulled in different directions (Wants to buy fun things but has bills to pay)">Pulled in different directions</option>
-                    <option value="Entrepreneurial (Wants to split business money from personal money)">Entrepreneurial</option>
-                    <option value="Goal-oriented and highly motivated (Saving for something big)">Goal-oriented & motivated</option>
-                </select>
-            </div>
-
-            <h2 class="section-break">Step 2: Comic Plot Elements</h2>
-
-            <div class="form-group">
-                <label for="select-wall">The Big Problem (Panel 2 Wall)</label>
-                <select id="select-wall">
-                    <option value="wants to purchase concert tickets/sneakers online but has no debit card number.">Cannot buy online (No card)</option>
-                    <option value="wants to register for their driver's license or a school trip but the portal won't accept physical cash.">Cannot pay digital portal (Cash refused)</option>
-                    <option value="needs to send money quickly to a friend via app, but only has physical bills.">Cannot transfer money to a mate</option>
-                    <option value="is told by their boss that they cannot get paid unless they provide a BSB and Account number.">Employer requires electronic transfer</option>
-                    <option value="realizes a huge chunk of their saved cash went missing or was taken by a sibling from their hiding spot.">Cash gets lost or stolen</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="select-solution">The Chosen Banking Solution (Panel 4 & 6)</label>
-                <select id="select-solution">
-                    <option value="everyday">Everyday Transaction Account with a Debit Card</option>
-                    <option value="savings">High-Interest Savings Account with 'Savings Buckets'</option>
-                    <option value="combo">Everyday Account linked with an Automated Savings Vault</option>
-                </select>
-            </div>
-
-            <button onclick="buildProfile()">Generate Comic Blueprint</button>
-        </div>
-
-        <!-- RIGHT: Blueprint Output Sheet -->
-        <div class="card">
-            <h2>📋 Student Character Profile Sheet</h2>
-            
-            <div id="profile-output">
-                <div class="profile-header">
-                    <h3 id="out-name">Sam</h3>
-                    <div class="meta-grid">
-                        <div><strong>Job:</strong> <span id="out-job">-</span></div>
-                        <div><strong>Income:</strong> <span id="out-income">-</span></div>
-                        <div style="grid-column: span 2;"><strong>Profile:</strong> <span id="out-personality">-</span></div>
-                    </div>
-                </div>
-
-                <div class="panel-guide">
-                    <div class="panel-box">
-                        <div class="panel-title">Panel 1: Payday! Sort of... <span class="panel-tag">Scene Prompt</span></div>
-                        <p id="p1-text"></p>
-                    </div>
-
-                    <div class="panel-box">
-                        <div class="panel-title">Panel 2: I Just Want to Buy a Thing! <span class="panel-tag">The Conflict</span></div>
-                        <p id="p2-text"></p>
-                    </div>
-
-                    <div class="panel-box">
-                        <div class="panel-title">Panel 4: So Many Account Types?! <span class="panel-tag">The Strategy</span></div>
-                        <p id="p4-text"></p>
-                    </div>
-
-                    <div class="panel-box">
-                        <div class="panel-title">Panel 6: The Manager's Advice <span class="panel-tag">The Fix</span></div>
-                        <p id="p6-text"></p>
-                    </div>
-                </div>
-            </div>
-
-            <button class="print-btn" onclick="window.print()">Print Blueprint for Class</button>
-        </div>
+  <div class="header">
+    <h1>Values Card Sort</h1>
+    <p>As a group, discuss each value and click to add it to your Top 5. You must choose exactly 5 — so talk it through before you commit!</p>
+    <div class="counter-row">
+      <div class="counter" id="counter">Selected: <span id="count">0</span> / 5</div>
     </div>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All values</button>
+    <button class="filter-btn econ" onclick="setFilter('econ', this)">Economic</button>
+    <button class="filter-btn env"  onclick="setFilter('env', this)">Environmental</button>
+    <button class="filter-btn soc"  onclick="setFilter('soc', this)">Social</button>
+  </div>
+
+  <div class="board">
+    <div>
+      <div class="col-header">All values <span class="badge" id="pool-badge">20</span></div>
+      <div class="cards-grid" id="pool"></div>
+    </div>
+    <div>
+      <div class="col-header">Our top 5 <span class="badge" id="top5-badge">0</span></div>
+      <div class="cards-grid" id="top5"><div class="empty-state">Click a card to add it here</div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="reflect-section">
+    <h2>Reflect as a group</h2>
+    <p>Once you've agreed on your top 5, answer these questions together.</p>
+
+    <div class="selected-summary" id="summary" style="display:none">
+      <strong>Your top 5 values:</strong>
+      <div id="pills"></div>
+    </div>
+
+    <div class="reflect-q">
+      <label>Why do these 5 values fit your business?</label>
+      <textarea id="q1" placeholder="Write your group's reasoning here…"></textarea>
+    </div>
+    <div class="reflect-q">
+      <label>Name a value you left out — and why it didn't make the cut</label>
+      <textarea id="q2" placeholder="e.g. We chose not to include 'Profit' because our primary goal is community impact…"></textarea>
+    </div>
+    <div class="reflect-q">
+      <label>Which of these will you mention in your mission statement?</label>
+      <textarea id="q3" placeholder="Think about which values best describe who you are and what you do…"></textarea>
+    </div>
+
+    <div class="warning" id="warning">Please select at least one value before sending.</div>
+  </div>
+
 </div>
 
 <script>
-    const bankingText = {
-        everyday: {
-            p4: "Chooses an Everyday Transaction Account. This lets them safe-keep money, gives them a handy plastic Debit Card, and provides a clear BSB/Account number for digital tracks.",
-            p6: "The manager recommends setting app spending alerts and checking mobile statements weekly to keep track of quick debit purchases before they add up."
-        },
-        savings: {
-            p4: "Chooses a specialized High-Interest Savings Account. They decide to separate their basic cash from their goals by naming custom 'Digital Savings Buckets' in the app.",
-            p6: "The manager explains that the bank safely protects and insures their money, meaning it can't be lost or stolen like hidden room cash—plus it earns interest!"
-        },
-        combo: {
-            p4: "Sets up a linked account pair: an Everyday Account for receiving wages, immediately tethered to a secondary high-incentive Savings Account.",
-            p6: "The manager suggests activating a 'Set & Forget' automatic scheduled transfer. On payday, 20% of their income automatically hops out of sight into the savings vault."
-        }
-    };
+const values = [
+  { id:1,  name:'Profit',          cat:'econ', label:'Economic',      desc:'Generating a financial return that keeps the business going' },
+  { id:2,  name:'Growth',          cat:'econ', label:'Economic',      desc:'Expanding reach, revenue, or impact over time' },
+  { id:3,  name:'Innovation',      cat:'econ', label:'Economic',      desc:'Finding new ways to solve problems or create value' },
+  { id:4,  name:'Efficiency',      cat:'econ', label:'Economic',      desc:'Getting the best results with minimal waste of time or money' },
+  { id:5,  name:'Quality',         cat:'econ', label:'Economic',      desc:'Delivering products or services that meet a high standard' },
+  { id:6,  name:'Value for money', cat:'econ', label:'Economic',      desc:'Giving customers a fair return on what they spend' },
+  { id:7,  name:'Kaitiakitanga',   cat:'env',  label:'Environmental', desc:'Guardianship and care for the natural world' },
+  { id:8,  name:'Sustainability',  cat:'env',  label:'Environmental', desc:'Operating in a way that can continue without harming the planet' },
+  { id:9,  name:'Zero waste',      cat:'env',  label:'Environmental', desc:'Minimising materials sent to landfill' },
+  { id:10, name:'Locally sourced', cat:'env',  label:'Environmental', desc:'Using materials and suppliers from close to home' },
+  { id:11, name:'Renewable',       cat:'env',  label:'Environmental', desc:'Choosing energy and materials that can be replenished' },
+  { id:12, name:'Circular design', cat:'env',  label:'Environmental', desc:'Making products that can be reused, repaired, or recycled' },
+  { id:13, name:'Community',       cat:'soc',  label:'Social',        desc:'Contributing positively to the people around us' },
+  { id:14, name:'Whānau',          cat:'soc',  label:'Social',        desc:'Caring for each other and those we serve' },
+  { id:15, name:'Fairness',        cat:'soc',  label:'Social',        desc:'Treating everyone equally and without bias' },
+  { id:16, name:'Transparency',    cat:'soc',  label:'Social',        desc:'Being open and honest about how the business operates' },
+  { id:17, name:'Inclusivity',     cat:'soc',  label:'Social',        desc:'Welcoming people of all backgrounds and identities' },
+  { id:18, name:'Integrity',       cat:'soc',  label:'Social',        desc:'Doing the right thing even when no one is watching' },
+  { id:19, name:'Manaakitanga',    cat:'soc',  label:'Social',        desc:'Showing respect, generosity, and care for others' },
+  { id:20, name:'Empowerment',     cat:'soc',  label:'Social',        desc:'Helping others grow, lead, and reach their potential' },
+];
 
-    function buildProfile() {
-        // Capture individual field variables
-        const name = document.getElementById('char-name').value || "The Character";
-        const job = document.getElementById('select-job').value;
-        const income = document.getElementById('select-income').value;
-        const personality = document.getElementById('select-personality').value;
-        const wall = document.getElementById('select-wall').value;
-        const solutionKey = document.getElementById('select-solution').value;
+let selected = new Set();
+let currentFilter = 'all';
 
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
 
-        document.getElementById('out-name').innerText = name;
-        document.getElementById('out-job').innerText = document.getElementById('select-job').options[document.getElementById('select-job').selectedIndex].text;
-        document.getElementById('out-income').innerText = income.replace(' per week', '/wk');
-        document.getElementById('out-personality').innerText = personality;
+function toggle(id) {
+  if (selected.has(id)) {
+    selected.delete(id);
+  } else {
+    if (selected.size >= 5) return;
+    selected.add(id);
+  }
+  render();
+}
 
-        document.getElementById('p1-text').innerText = `${name} gets paid for working as a ${job}. They pull in ${income}. Their money habit style is: ${personality}. In this panel, draw them holding physical money but thinking about where to hide it or how risky it feels to walk around with it.`;
-        
-        document.getElementById('p2-text').innerText = `Frustration points mount! ${name} tries to interact with the modern world, but everything stalls because they ${wall} Draw them looking stressed out while a computer error, a business manager, or a friend says no to their cash bills.`;
-        
-        document.getElementById('p4-text').innerText = `${name} does some research on account variations. ${bankingText[solutionKey].p4} Draw them selecting this account on their phone or app screen because it perfectly answers their lifestyle dilemma.`;
-        
-        document.getElementById('p6-text').innerText = `A professional bank manager sits down with them to map out an upgrade framework. ${bankingText[solutionKey].p6} Draw ${name} happily walking out of the bank or locking their phone with a secure, clear money plan in place!`;
-    }
+function render() {
+  const poolEl = document.getElementById('pool');
+  const top5El = document.getElementById('top5');
+  const countEl = document.getElementById('count');
+  const counterEl = document.getElementById('counter');
+  const poolBadge = document.getElementById('pool-badge');
+  const top5Badge = document.getElementById('top5-badge');
+  const summary = document.getElementById('summary');
+  const pills = document.getElementById('pills');
 
-    window.onload = buildProfile;
+  countEl.textContent = selected.size;
+  if (selected.size >= 5) counterEl.classList.add('full'); else counterEl.classList.remove('full');
+
+  const filtered = values.filter(v => currentFilter === 'all' || v.cat === currentFilter);
+  const unselected = filtered.filter(v => !selected.has(v.id));
+  const sel = values.filter(v => selected.has(v.id));
+
+  poolBadge.textContent = unselected.length;
+  top5Badge.textContent = sel.length;
+  if (sel.length >= 5) top5Badge.classList.add('full'); else top5Badge.classList.remove('full');
+
+  poolEl.innerHTML = unselected.length === 0
+    ? '<div class="empty-state">All visible cards selected</div>'
+    : unselected.map(v => cardHTML(v, false)).join('');
+
+  top5El.innerHTML = sel.length === 0
+    ? '<div class="empty-state">Click a card to add it here</div>'
+    : sel.map(v => cardHTML(v, true)).join('');
+
+  if (sel.length > 0) {
+    summary.style.display = 'block';
+    pills.innerHTML = sel.map(v => `<span class="pill">${v.name}</span>`).join('');
+  } else {
+    summary.style.display = 'none';
+  }
+}
+
+function cardHTML(v, sel) {
+  return `<div class="card ${v.cat}${sel ? ' selected' : ''}" onclick="toggle(${v.id})">
+    <div class="card-cat">${v.label}</div>
+    <div class="card-name">${v.name}</div>
+    <div class="card-desc">${v.desc}</div>
+  </div>`;
+}
+
+render();
 </script>
-
 </body>
 </html>
