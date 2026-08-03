@@ -1,512 +1,386 @@
 <!DOCTYPE html>
-<html lang="en-NZ">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kai Cart Ledger — Financial Decision Simulation</title>
-<style>
-  :root{
-    --ink:#14213D;
-    --paper:#F7F5EF;
-    --ledger-green:#2E5339;
-    --ledger-green-light:#e7efe9;
-    --gold:#C99A3F;
-    --rust:#A6403D;
-    --rust-light:#f7e9e8;
-    --charcoal:#232323;
-    --line:#d8d3c4;
-    --font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-    --font-body: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
-    --font-mono: 'Courier New', Courier, monospace;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year 9 Financial Literacy - Custom Character Mixer</title>
+    <style>
+        :root {
+            --primary: #059669;
+            --primary-hover: #047857;
+            --background: #f1f5f9;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-light: #475569;
+            --border: #cbd5e1;
+            --accent: #d97706;
+            --panel-bg: #f8fafc;
+        }
 
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--ink);
-    color:var(--charcoal);
-    font-family:var(--font-body);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    padding:28px 16px 60px;
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
-  }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
 
-  .rig{
-    width:100%;
-    max-width:640px;
-  }
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
 
-  /* Ticker / header */
-  .ticker{
-    background:var(--ink);
-    color:var(--paper);
-    border-radius:10px 10px 0 0;
-    padding:20px 22px 16px;
-    border:1px solid #2a3a63;
-    border-bottom:none;
-  }
-  .ticker-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:12px;
-  }
-  .brand{
-    font-family:var(--font-display);
-    font-size:1.5rem;
-    letter-spacing:0.02em;
-  }
-  .brand span{color:var(--gold);}
-  .balance-label{
-    font-family:var(--font-mono);
-    font-size:0.68rem;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    color:#9fb0d6;
-    margin-bottom:2px;
-  }
-  .balance{
-    font-family:var(--font-mono);
-    font-size:1.9rem;
-    font-variant-numeric:tabular-nums;
-    text-align:right;
-    transition:color 0.3s ease;
-  }
-  .balance.up{color:#7fd9a0;}
-  .balance.down{color:#e08b87;}
-  .stage-track{
-    display:flex;
-    gap:6px;
-    margin-top:16px;
-  }
-  .stage-chip{
-    flex:1;
-    font-family:var(--font-mono);
-    font-size:0.62rem;
-    letter-spacing:0.06em;
-    text-transform:uppercase;
-    padding:7px 6px;
-    border-radius:5px;
-    text-align:center;
-    background:#22305a;
-    color:#8494bd;
-    border:1px solid #2a3a63;
-  }
-  .stage-chip.active{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700;}
-  .stage-chip.done{background:#22305a;color:#7fd9a0;border-color:#3a5a4a;}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-  /* Paper card */
-  .card{
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-top:none;
-    border-radius:0 0 10px 10px;
-    padding:30px 28px 26px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.35);
-  }
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px dashed var(--border);
+            padding-bottom: 1.5rem;
+        }
 
-  .stage-title{
-    font-family:var(--font-display);
-    font-size:1.5rem;
-    margin:0 0 4px;
-    color:var(--ink);
-  }
-  .stage-sub{
-    font-family:var(--font-mono);
-    font-size:0.72rem;
-    text-transform:uppercase;
-    letter-spacing:0.1em;
-    color:#8a8474;
-    margin-bottom:20px;
-    border-bottom:1px dashed var(--line);
-    padding-bottom:14px;
-  }
+        h1 {
+            font-size: 2rem;
+            color: #064e3b;
+            margin-bottom: 0.5rem;
+        }
 
-  .scenario{
-    background:var(--ledger-green-light);
-    border-left:3px solid var(--ledger-green);
-    padding:14px 16px;
-    border-radius:4px;
-    font-size:0.95rem;
-    line-height:1.5;
-    margin-bottom:18px;
-  }
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
 
-  .prompt{
-    font-size:1.08rem;
-    line-height:1.5;
-    margin-bottom:18px;
-    color:var(--ink);
-  }
-  .prompt strong{color:var(--ink);}
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
 
-  .figures{
-    font-family:var(--font-mono);
-    font-size:0.88rem;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:6px;
-    padding:12px 16px;
-    margin-bottom:18px;
-    line-height:1.7;
-  }
-  .figures div{display:flex;justify-content:space-between;}
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 1.2fr;
+            }
+        }
 
-  .options{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin-bottom:6px;
-  }
-  .opt{
-    text-align:left;
-    background:#fff;
-    border:1.5px solid var(--line);
-    border-radius:7px;
-    padding:13px 16px;
-    font-family:var(--font-body);
-    font-size:0.95rem;
-    color:var(--charcoal);
-    cursor:pointer;
-    transition:border-color 0.15s ease, background 0.15s ease;
-  }
-  .opt:hover:not(:disabled){border-color:var(--ink);}
-  .opt:focus-visible{outline:3px solid var(--gold); outline-offset:1px;}
-  .opt:disabled{cursor:default;}
-  .opt.correct{background:var(--ledger-green-light);border-color:var(--ledger-green);}
-  .opt.incorrect{background:var(--rust-light);border-color:var(--rust);}
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
 
-  .feedback{
-    margin-top:16px;
-    padding:14px 16px;
-    border-radius:6px;
-    font-size:0.92rem;
-    line-height:1.55;
-    display:none;
-  }
-  .feedback.show{display:block;}
-  .feedback.correct{background:var(--ledger-green-light);border:1px solid var(--ledger-green);}
-  .feedback.incorrect{background:var(--rust-light);border:1px solid var(--rust);}
-  .feedback-label{
-    font-family:var(--font-mono);
-    font-size:0.68rem;
-    text-transform:uppercase;
-    letter-spacing:0.1em;
-    display:block;
-    margin-bottom:5px;
-  }
-  .feedback.correct .feedback-label{color:var(--ledger-green);}
-  .feedback.incorrect .feedback-label{color:var(--rust);}
+        h2 {
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid #e2e8f0;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
-  .nextbtn{
-    margin-top:18px;
-    background:var(--ink);
-    color:var(--paper);
-    border:none;
-    border-radius:7px;
-    padding:12px 20px;
-    font-family:var(--font-body);
-    font-size:0.92rem;
-    font-weight:600;
-    cursor:pointer;
-    display:none;
-  }
-  .nextbtn.show{display:inline-block;}
-  .nextbtn:hover{background:#1e2c52;}
-  .nextbtn:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+        .section-break {
+            margin-top: 1.5rem;
+        }
 
-  .progress-line{
-    font-family:var(--font-mono);
-    font-size:0.7rem;
-    color:#9a9484;
-    margin-top:20px;
-    text-align:right;
-  }
+        .form-group {
+            margin-bottom: 1rem;
+        }
 
-  /* End screen */
-  .end{
-    text-align:center;
-    padding:20px 0 4px;
-  }
-  .end h2{
-    font-family:var(--font-display);
-    font-size:1.7rem;
-    color:var(--ink);
-    margin-bottom:6px;
-  }
-  .end p{line-height:1.6;color:var(--charcoal);}
-  .restart{
-    margin-top:16px;
-    background:transparent;
-    border:1.5px solid var(--ink);
-    color:var(--ink);
-    padding:10px 18px;
-    border-radius:7px;
-    font-family:var(--font-body);
-    font-weight:600;
-    cursor:pointer;
-  }
-  .restart:hover{background:var(--ink);color:var(--paper);}
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+            color: #334155;
+        }
 
-  .hidden{display:none;}
-</style>
+        select, input {
+            width: 100%;
+            padding: 0.65rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background-color: #f8fafc;
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--primary);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Profile Sheet Visuals */
+        .profile-header {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+        }
+
+        .profile-header h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.75rem;
+            border-radius: 6px;
+        }
+
+        .panel-guide {
+            margin-top: 1rem;
+        }
+
+        .panel-box {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .panel-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #1e293b;
+            margin-bottom: 0.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-tag {
+            font-size: 0.7rem;
+            background: #cbd5e1;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: #334155;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .panel-box p {
+            font-size: 0.9rem;
+            color: #334155;
+            line-height: 1.4;
+        }
+
+        .print-btn {
+            background-color: #1e293b;
+            margin-top: 0.5rem;
+        }
+        .print-btn:hover {
+            background-color: #0f172a;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .card:first-child, .print-btn { display: none; }
+            .grid { grid-template-columns: 1fr; }
+            .card { border: none; box-shadow: none; padding: 0; }
+            .panel-box { page-break-inside: avoid; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="rig">
+<div class="container">
+    <header>
+        <h1>💸 Custom Character Profile Builder</h1>
+        <p class="subtitle">Select individual pieces to generate a unique worksheet for your comic strip!</p>
+    </header>
 
-  <div class="ticker">
-    <div class="ticker-top">
-      <div>
-        <div class="brand">Kai Cart <span>Ledger</span></div>
-      </div>
-      <div>
-        <div class="balance-label">Cash on hand</div>
-        <div class="balance" id="balance">$1,200</div>
-      </div>
+    <div class="grid">
+        <!-- LEFT: Independent Selectors -->
+        <div class="card">
+            <h2>Step 1: Character Basics</h2>
+            
+            <div class="form-group">
+                <label for="char-name">Character Name</label>
+                <input type="text" id="char-name" value="Sam">
+            </div>
+
+            <div class="form-group">
+                <label for="select-job">What is their job?</label>
+                <select id="select-job">
+                    <option value="Barista at a busy local café">Café Barista</option>
+                    <option value="Babysitter and dog walker">Babysitter & Dog Walker</option>
+                    <option value="Lawn mowing and neighborhood chores">Lawn Mowing Business</option>
+                    <option value="Retail assistant at a clothing shop">Retail Assistant</option>
+                    <option value="Pizza delivery rider">Pizza Delivery Rider</option>
+                    <option value="Canteen assistant & online craft seller">Canteen & Craft Maker</option>
+                    <option value="Weekend farm hand">Farm Hand</option>
+                    <option value="Swim instructor at the aquatic center">Swim Instructor</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="select-income">Weekly Income Amount</label>
+                <select id="select-income">
+                    <option value="$50 - $100 per week">$50 - $100 per week</option>
+                    <option value="$120 - $160 per week">$120 - $160 per week</option>
+                    <option value="$180 - $220 per week">$180 - $220 per week</option>
+                    <option value="An unpredictable amount depending on the season">Unpredictable (Seasonal)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="select-personality">Money Personality</label>
+                <select id="select-personality">
+                    <option value="Spend now, stress later (Impulsive & loves online shopping)">Spend now, stress later</option>
+                    <option value="Careful saver, but suspicious and doesn't trust the banking system">Careful saver (Suspicious)</option>
+                    <option value="Informal and disorganized (Hides cash in random places)">Informal & disorganized</option>
+                    <option value="Aspirational and style-conscious (Ready to scale up financially)">Aspirational & style-conscious</option>
+                    <option value="Pulled in different directions (Wants to buy fun things but has bills to pay)">Pulled in different directions</option>
+                    <option value="Entrepreneurial (Wants to split business money from personal money)">Entrepreneurial</option>
+                    <option value="Goal-oriented and highly motivated (Saving for something big)">Goal-oriented & motivated</option>
+                </select>
+            </div>
+
+            <h2 class="section-break">Step 2: Comic Plot Elements</h2>
+
+            <div class="form-group">
+                <label for="select-wall">The Big Problem (Panel 2 Wall)</label>
+                <select id="select-wall">
+                    <option value="wants to purchase concert tickets/sneakers online but has no debit card number.">Cannot buy online (No card)</option>
+                    <option value="wants to register for their driver's license or a school trip but the portal won't accept physical cash.">Cannot pay digital portal (Cash refused)</option>
+                    <option value="needs to send money quickly to a friend via app, but only has physical bills.">Cannot transfer money to a mate</option>
+                    <option value="is told by their boss that they cannot get paid unless they provide a BSB and Account number.">Employer requires electronic transfer</option>
+                    <option value="realizes a huge chunk of their saved cash went missing or was taken by a sibling from their hiding spot.">Cash gets lost or stolen</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="select-solution">The Chosen Banking Solution (Panel 4 & 6)</label>
+                <select id="select-solution">
+                    <option value="everyday">Everyday Transaction Account with a Debit Card</option>
+                    <option value="savings">High-Interest Savings Account with 'Savings Buckets'</option>
+                    <option value="combo">Everyday Account linked with an Automated Savings Vault</option>
+                </select>
+            </div>
+
+            <button onclick="buildProfile()">Generate Comic Blueprint</button>
+        </div>
+
+        <!-- RIGHT: Blueprint Output Sheet -->
+        <div class="card">
+            <h2>📋 Student Character Profile Sheet</h2>
+            
+            <div id="profile-output">
+                <div class="profile-header">
+                    <h3 id="out-name">Sam</h3>
+                    <div class="meta-grid">
+                        <div><strong>Job:</strong> <span id="out-job">-</span></div>
+                        <div><strong>Income:</strong> <span id="out-income">-</span></div>
+                        <div style="grid-column: span 2;"><strong>Profile:</strong> <span id="out-personality">-</span></div>
+                    </div>
+                </div>
+
+                <div class="panel-guide">
+                    <div class="panel-box">
+                        <div class="panel-title">Panel 1: Payday! Sort of... <span class="panel-tag">Scene Prompt</span></div>
+                        <p id="p1-text"></p>
+                    </div>
+
+                    <div class="panel-box">
+                        <div class="panel-title">Panel 2: I Just Want to Buy a Thing! <span class="panel-tag">The Conflict</span></div>
+                        <p id="p2-text"></p>
+                    </div>
+
+                    <div class="panel-box">
+                        <div class="panel-title">Panel 4: So Many Account Types?! <span class="panel-tag">The Strategy</span></div>
+                        <p id="p4-text"></p>
+                    </div>
+
+                    <div class="panel-box">
+                        <div class="panel-title">Panel 6: The Manager's Advice <span class="panel-tag">The Fix</span></div>
+                        <p id="p6-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="print-btn" onclick="window.print()">Print Blueprint for Class</button>
+        </div>
     </div>
-    <div class="stage-track">
-      <div class="stage-chip" id="chip-0">Setting up the books</div>
-      <div class="stage-chip" id="chip-1">Balancing the ledger</div>
-      <div class="stage-chip" id="chip-2">Making the call</div>
-    </div>
-  </div>
-
-  <div class="card" id="card">
-    <!-- populated by JS -->
-  </div>
-
 </div>
 
 <script>
-const STAGES = [
-  {
-    name: "Setting up the books",
-    sub: "Stage 1 — Know your terms",
-    questions: [
-      {
-        prompt: "Kai Cart pays $600 a week to lease the van, whether it sells one pie or one hundred. What kind of cost is this?",
-        options: ["Variable cost", "Fixed cost", "Gross profit", "Contribution margin"],
-        correct: 1,
-        correctMsg: "Right. A fixed cost stays the same regardless of how much Kai Cart sells — the van lease doesn't change whether they sell 10 pies or 100.",
-        incorrectMsg: "Not quite. Think about whether this cost changes with the number of pies sold. The van lease is charged weekly no matter what — that makes it a fixed cost.",
-        hint: "Fixed costs don't move with sales volume. Variable costs do."
-      },
-      {
-        prompt: "The flour, meat, and packaging for each pie cost $3.50 in total. What kind of cost is this?",
-        options: ["Fixed cost", "Variable cost", "Revenue", "Break-even point"],
-        correct: 1,
-        correctMsg: "Correct — this cost rises and falls directly with how many pies are made, so it's a variable cost.",
-        incorrectMsg: "Have another look: this cost only exists per pie made. If Kai Cart makes zero pies, it pays nothing here — that's the signature of a variable cost.",
-        hint: "Ask: does the total change if Kai Cart sells more or fewer pies?"
-      },
-      {
-        prompt: "Which term describes the point where total revenue exactly equals total costs — no profit, no loss?",
-        options: ["Gross profit margin", "Break-even point", "Net cash flow", "Return on investment"],
-        correct: 1,
-        correctMsg: "Exactly. The break-even point is the sales level where Kai Cart covers all its costs but hasn't started making profit yet.",
-        incorrectMsg: "Not this one. You're looking for the specific term for 'costs = revenue, profit is zero.'",
-        hint: "The word itself is a clue — the business is 'even', not up or down."
-      }
-    ]
-  },
-  {
-    name: "Balancing the ledger",
-    sub: "Stage 2 — Do the maths",
-    questions: [
-      {
-        prompt: "Kai Cart sells pies for $9.00 each. Variable cost per pie is $3.50. Weekly fixed costs are $825. How many pies must Kai Cart sell per week to break even?",
-        figures: [["Selling price per pie", "$9.00"], ["Variable cost per pie", "$3.50"], ["Contribution per pie", "$5.50"], ["Weekly fixed costs", "$825"]],
-        options: ["110 pies", "150 pies", "236 pies", "92 pies"],
-        correct: 1,
-        correctMsg: "Correct. Break-even = fixed costs ÷ contribution per unit = $825 ÷ $5.50 = 150 pies a week.",
-        incorrectMsg: "Try the formula: Break-even (units) = Fixed costs ÷ Contribution per unit. Contribution per unit is selling price minus variable cost ($9.00 − $3.50 = $5.50). Then $825 ÷ $5.50.",
-        hint: "Contribution per pie = selling price − variable cost. Break-even units = fixed costs ÷ contribution per pie."
-      },
-      {
-        prompt: "Last month Kai Cart had sales revenue of $9,000 and cost of goods sold of $3,150. What was the gross profit margin?",
-        figures: [["Sales revenue", "$9,000"], ["Cost of goods sold", "$3,150"], ["Gross profit", "$5,850"]],
-        options: ["35%", "65%", "45%", "58%"],
-        correct: 1,
-        correctMsg: "Correct. Gross profit margin = (Gross profit ÷ Sales revenue) × 100 = ($5,850 ÷ $9,000) × 100 = 65%.",
-        incorrectMsg: "Use: Gross profit margin = (Gross profit ÷ Sales revenue) × 100. Gross profit is $9,000 − $3,150 = $5,850. Then divide by $9,000 and multiply by 100.",
-        hint: "Gross profit = revenue − cost of goods sold. Then divide gross profit by revenue, ×100."
-      }
-    ]
-  },
-  {
-    name: "Making the call",
-    sub: "Stage 3 — Justify a recommendation",
-    questions: [
-      {
-        scenario: "Kai Cart's gross profit margin has held steady at 65% for six months — strong for a food business, where 55–65% is typical. The owner is considering a $4,000 loan to buy a second van and expand to a new suburb.",
-        prompt: "Based on the gross profit margin above, which recommendation is best justified?",
-        options: [
-          "Reject the loan — a 65% margin means the business isn't profitable enough to expand.",
-          "Accept the loan — a strong, stable 65% margin suggests the core business model is profitable, which supports taking on the risk of expansion.",
-          "It's impossible to make a recommendation without knowing the owner's age.",
-          "Accept the loan only if pie prices are lowered first."
-        ],
-        correct: 1,
-        correctMsg: "Well justified. A consistently strong gross profit margin is evidence the core business is financially healthy, which is a reasonable basis to support taking on manageable debt for growth — though a full recommendation would also check cash flow and the loan's repayment terms.",
-        incorrectMsg: "Look again at what a 65% gross profit margin actually signals about the business's underlying profitability before deciding whether it supports expansion.",
-        hint: "A high, steady margin is generally a sign of a healthy core business — how does that relate to the risk of expanding?"
-      },
-      {
-        scenario: "A competing food truck has just parked two streets away, undercutting Kai Cart's pie price by $1.50. The owner is debating whether to match the lower price.",
-        prompt: "Using what you know about contribution per unit, what's the strongest concern with matching the competitor's price?",
-        options: [
-          "There is no concern — lower prices always increase total profit.",
-          "Matching the price would cut contribution per pie from $5.50 to $4.00, meaning far more pies would need to be sold each week just to cover the same fixed costs.",
-          "It only matters if the competitor also sells pies.",
-          "Fixed costs would automatically decrease to compensate."
-        ],
-        correct: 1,
-        correctMsg: "Exactly right — this is the core trade-off. A lower price shrinks contribution per unit, which raises the break-even point, so Kai Cart would need a higher sales volume just to stand still.",
-        incorrectMsg: "Think back to the break-even formula from Stage 2: fixed costs ÷ contribution per unit. What happens to that number if contribution per unit drops?",
-        hint: "If contribution per pie falls, and fixed costs stay the same, what happens to the break-even quantity?"
-      }
-    ]
-  }
-];
+    const bankingText = {
+        everyday: {
+            p4: "Chooses an Everyday Transaction Account. This lets them safe-keep money, gives them a handy plastic Debit Card, and provides a clear BSB/Account number for digital tracks.",
+            p6: "The manager recommends setting app spending alerts and checking mobile statements weekly to keep track of quick debit purchases before they add up."
+        },
+        savings: {
+            p4: "Chooses a specialized High-Interest Savings Account. They decide to separate their basic cash from their goals by naming custom 'Digital Savings Buckets' in the app.",
+            p6: "The manager explains that the bank safely protects and insures their money, meaning it can't be lost or stolen like hidden room cash—plus it earns interest!"
+        },
+        combo: {
+            p4: "Sets up a linked account pair: an Everyday Account for receiving wages, immediately tethered to a secondary high-incentive Savings Account.",
+            p6: "The manager suggests activating a 'Set & Forget' automatic scheduled transfer. On payday, 20% of their income automatically hops out of sight into the savings vault."
+        }
+    };
 
-let stageIdx = 0;
-let qIdx = 0;
-let balance = 1200;
-let answered = false;
+    function buildProfile() {
+        // Capture individual field variables
+        const name = document.getElementById('char-name').value || "The Character";
+        const job = document.getElementById('select-job').value;
+        const income = document.getElementById('select-income').value;
+        const personality = document.getElementById('select-personality').value;
+        const wall = document.getElementById('select-wall').value;
+        const solutionKey = document.getElementById('select-solution').value;
 
-const card = document.getElementById('card');
-const balanceEl = document.getElementById('balance');
 
-function fmtMoney(n){
-  return (n<0?'-$':'$') + Math.abs(n).toLocaleString();
-}
+        document.getElementById('out-name').innerText = name;
+        document.getElementById('out-job').innerText = document.getElementById('select-job').options[document.getElementById('select-job').selectedIndex].text;
+        document.getElementById('out-income').innerText = income.replace(' per week', '/wk');
+        document.getElementById('out-personality').innerText = personality;
 
-function updateChips(){
-  for(let i=0;i<3;i++){
-    const chip = document.getElementById('chip-'+i);
-    chip.classList.remove('active','done');
-    if(i < stageIdx) chip.classList.add('done');
-    else if(i === stageIdx) chip.classList.add('active');
-  }
-}
+        document.getElementById('p1-text').innerText = `${name} gets paid for working as a ${job}. They pull in ${income}. Their money habit style is: ${personality}. In this panel, draw them holding physical money but thinking about where to hide it or how risky it feels to walk around with it.`;
+        
+        document.getElementById('p2-text').innerText = `Frustration points mount! ${name} tries to interact with the modern world, but everything stalls because they ${wall} Draw them looking stressed out while a computer error, a business manager, or a friend says no to their cash bills.`;
+        
+        document.getElementById('p4-text').innerText = `${name} does some research on account variations. ${bankingText[solutionKey].p4} Draw them selecting this account on their phone or app screen because it perfectly answers their lifestyle dilemma.`;
+        
+        document.getElementById('p6-text').innerText = `A professional bank manager sits down with them to map out an upgrade framework. ${bankingText[solutionKey].p6} Draw ${name} happily walking out of the bank or locking their phone with a secure, clear money plan in place!`;
+    }
 
-function flashBalance(delta){
-  balance += delta;
-  balanceEl.textContent = fmtMoney(balance);
-  balanceEl.classList.remove('up','down');
-  void balanceEl.offsetWidth;
-  balanceEl.classList.add(delta >= 0 ? 'up' : 'down');
-}
-
-function render(){
-  updateChips();
-  if(stageIdx >= STAGES.length){
-    renderEnd();
-    return;
-  }
-  const stage = STAGES[stageIdx];
-  const q = stage.questions[qIdx];
-  answered = false;
-
-  let html = `<h2 class="stage-title">${stage.name}</h2>
-    <div class="stage-sub">${stage.sub} — Question ${qIdx+1} of ${stage.questions.length}</div>`;
-
-  if(q.scenario){
-    html += `<div class="scenario">${q.scenario}</div>`;
-  }
-
-  html += `<div class="prompt">${q.prompt}</div>`;
-
-  if(q.figures){
-    html += `<div class="figures">`;
-    q.figures.forEach(f => { html += `<div><span>${f[0]}</span><span>${f[1]}</span></div>`; });
-    html += `</div>`;
-  }
-
-  html += `<div class="options" id="options">`;
-  q.options.forEach((opt, i) => {
-    html += `<button class="opt" data-idx="${i}">${opt}</button>`;
-  });
-  html += `</div>`;
-
-  html += `<div class="feedback" id="feedback"></div>`;
-  html += `<button class="nextbtn" id="nextbtn">Continue →</button>`;
-
-  const totalQ = STAGES.reduce((a,s)=>a+s.questions.length,0);
-  const doneQ = STAGES.slice(0,stageIdx).reduce((a,s)=>a+s.questions.length,0) + qIdx;
-  html += `<div class="progress-line">${doneQ+1} of ${totalQ} total questions</div>`;
-
-  card.innerHTML = html;
-
-  document.querySelectorAll('.opt').forEach(btn => {
-    btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.idx)));
-  });
-}
-
-function handleAnswer(idx){
-  if(answered) return;
-  answered = true;
-  const stage = STAGES[stageIdx];
-  const q = stage.questions[qIdx];
-  const buttons = document.querySelectorAll('.opt');
-  const feedback = document.getElementById('feedback');
-  const nextbtn = document.getElementById('nextbtn');
-  const isCorrect = idx === q.correct;
-
-  buttons.forEach((b,i) => {
-    b.disabled = true;
-    if(i === q.correct) b.classList.add('correct');
-    else if(i === idx) b.classList.add('incorrect');
-  });
-
-  if(isCorrect){
-    flashBalance(50);
-    feedback.className = 'feedback show correct';
-    feedback.innerHTML = `<span class="feedback-label">Correct</span>${q.correctMsg}`;
-  } else {
-    flashBalance(-15);
-    feedback.className = 'feedback show incorrect';
-    feedback.innerHTML = `<span class="feedback-label">Not quite — here's a hint</span>${q.incorrectMsg}<br><br><em>Hint: ${q.hint}</em>`;
-  }
-
-  nextbtn.classList.add('show');
-  nextbtn.addEventListener('click', advance);
-  nextbtn.focus();
-}
-
-function advance(){
-  const stage = STAGES[stageIdx];
-  if(qIdx < stage.questions.length - 1){
-    qIdx++;
-  } else {
-    stageIdx++;
-    qIdx = 0;
-  }
-  render();
-}
-
-function renderEnd(){
-  card.innerHTML = `
-    <div class="end">
-      <h2>Ledger closed 📕</h2>
-      <p>You worked through all three stages — terms, calculations, and a justified business recommendation.<br>
-      Final cash on hand: <strong>${fmtMoney(balance)}</strong></p>
-      <button class="restart" id="restart">Run it again</button>
-    </div>`;
-  document.getElementById('restart').addEventListener('click', () => {
-    stageIdx = 0; qIdx = 0; balance = 1200;
-    balanceEl.textContent = fmtMoney(balance);
-    balanceEl.classList.remove('up','down');
-    render();
-  });
-}
-
-render();
+    window.onload = buildProfile;
 </script>
 
 </body>
