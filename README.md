@@ -661,7 +661,6 @@ function renderIntro(){
   app.innerHTML = `
     <h2>📝 Practice quiz: 3.2 External Factors</h2>
     <p>Twelve questions covering recall, Māori business concepts, business knowledge, and strategic responses to real NZ company scenarios. This attempt is a random mix - no two attempts are quite the same.</p>
-    <p class="muted small">This is anonymous practice. Nothing is saved or recorded, and there's no time limit. You can move back and forward through your answers at any point. Take it as many times as you like in the lead-up to the exam.</p>
     <div class="btn-row" style="justify-content:flex-start;">
       <button class="btn" id="startBtn">Start quiz</button>
     </div>
