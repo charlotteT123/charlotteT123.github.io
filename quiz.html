@@ -481,10 +481,10 @@ const scenarios = [
     factor: "A new competitor enters the market.",
     prompt: "What is a potential strategic response for KMD Brands Limited to this external factor?",
     options: [
-      { text: "Do nothing", level: "Not Achieved", explanation: "Taking no action leaves the business exposed to losing market share, with no strategic reasoning behind it." },
-      { text: "Diversify your product offering", level: "Excellence", explanation: "Broadening the product range reduces reliance on any single line and gives customers reasons to stay, which directly addresses the new competition without triggering a price war." },
-      { text: "Increase prices", level: "Achieved", explanation: "This shows some reasoning, but raising prices just as a competitor enters risks pushing customers straight toward the cheaper new option." },
-      { text: "Seek different markets", level: "Merit", explanation: "Moving into new markets reduces exposure to the newly competitive segment, though it carries its own cost and risk of entry." }
+      { text: "Do nothing", level: "Not Achieved", explanation: "Taking no action means the business risks losing market share, with no strategic reasoning behind it." },
+      { text: "Diversify your product offering", level: "Excellence", explanation: "Broadening the product range reduces reliance on a single product line and gives customers reasons to stay, which directly addresses new competition without instigating a price war." },
+      { text: "Increase prices", level: "Achieved", explanation: "This shows some financial reasoning, but raising prices just as a new competitor enters risks pushing customers straight toward the new option - depending on prices." },
+      { text: "Seek different markets", level: "Merit", explanation: "Moving into new markets reduces exposure to the newly competitive segment, however it carries its own costs and risk of entry." }
     ],
     correctIndex: 1,
     bonus: {
@@ -505,8 +505,8 @@ const scenarios = [
     factor: "Another pandemic occurs.",
     prompt: "What is a potential strategic response for Fisher & Paykel Healthcare to this external factor?",
     options: [
-      { text: "Increase production", level: "Excellence", explanation: "This meets a genuine surge in demand for healthcare products and reflects manaakitanga (supporting the wider community), though it will raise costs initially." },
-      { text: "Increase prices", level: "Achieved", explanation: "A relatively safe option only if increases stay modest, as pushing prices too far during a health crisis risks reputational damage." },
+      { text: "Increase production", level: "Excellence", explanation: "This meets a genuine surge in demand for healthcare products and reflects manaakitanga (supporting the wider community), but it will raise costs initially." },
+      { text: "Increase prices", level: "Achieved", explanation: "A relatively safe option only if increases stay modest, as pushing prices too high during a health crisis risks reputational damage." },
       { text: "Maintain supply and prices", level: "Not Achieved", explanation: "This doesn't respond to a clear change in demand and is unlikely to be the strongest business decision." },
       { text: "Reduce supply to make goods scarcer", level: "Not Achieved", explanation: "Deliberately restricting essential health products during a pandemic is both poor business strategy and ethically questionable." }
     ],
@@ -516,7 +516,7 @@ const scenarios = [
       options: [
         "Because it could damage brand reputation and appear opportunistic during a health crisis",
         "Because prices for healthcare products are fixed by law",
-        "Because it always increases profit immediately",
+        "Because it always increases profit",
         "Because production costs never change during a crisis"
       ],
       correct: 0,
@@ -531,7 +531,7 @@ const scenarios = [
     options: [
       { text: "Do nothing - absorb the extra cost", level: "Achieved", explanation: "This is the easiest option but doesn't address the underlying issue and leaves the business exposed to rising costs long-term." },
       { text: "Spend immediately on low-emission vehicles", level: "Merit", explanation: "This supports long-term sustainability but is costly upfront and could put pressure on cash flow." },
-      { text: "Replace trucks with low-emission vehicles as they're decommissioned", level: "Excellence", explanation: "This balances environmental responsibility (kaitiakitanga) with cost, spreading the investment over time rather than all at once." },
+      { text: "Replace trucks with low-emission vehicles as they're decommissioned", level: "Excellence", explanation: "This balances environmental responsibility (kaitiakitanga) with costs, spreading the investment over time rather than all at once." },
       { text: "Buy more high-emission vehicles", level: "Not Achieved", explanation: "This directly increases exposure to the new tax and works against the direction of the regulation." }
     ],
     correctIndex: 2,
@@ -795,7 +795,7 @@ function showFeedback(step, chosenIndex, isCorrect, i){
 
   let headText;
   if(isBonus) headText = isCorrect ? '⭐ Bonus point earned' : 'No bonus point this time';
-  else headText = isCorrect ? 'Correct' : 'Not quite';
+  else headText = isCorrect ? 'Correct!' : 'Good attempt, but not quite an Excellence response!';
 
   const nextLabel = isLastStep ? 'See my results' : (isScenarioMain ? 'Continue' : 'Next question');
 
