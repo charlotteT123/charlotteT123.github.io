@@ -793,9 +793,17 @@ function showFeedback(step, chosenIndex, isCorrect, i){
   const levelChip = isScenarioMain ? `<span class="level-chip">${step.levels[chosenIndex]}</span>` : "";
   const isLastStep = i === steps.length - 1;
 
-  let headText;
-  if(isBonus) headText = isCorrect ? '⭐ Bonus point earned' : 'No bonus point this time';
-  else headText = isCorrect ? 'Correct!' : 'Good attempt, but not quite.';
+ let headText;
+
+if(isBonus) {
+  headText = isCorrect ? '⭐ Bonus point earned' : 'No bonus point this time';
+} else if(isCorrect) {
+  headText = 'Excellence!';
+} else if(isScenarioMain && step.levels[chosenIndex] === 'Not Achieved') {
+  headText = 'No - Not Achieved';
+} else {
+  headText = 'Good attempt, but not quite an excellence response.';
+}
 
   const nextLabel = isLastStep ? 'See my results' : (isScenarioMain ? 'Continue' : 'Next question');
 
