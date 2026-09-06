@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en-NZ">
 <head>
 <meta charset="UTF-8">
