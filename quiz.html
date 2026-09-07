@@ -191,6 +191,7 @@
     justify-content: flex-end;
     gap: 10px;
     margin-top: 22px;
+    flex-wrap: wrap;
   }
 
   .hint-toggle{
@@ -201,6 +202,7 @@
     padding: 0;
     font-size: 0.92rem;
     margin: -6px 0 18px;
+    display:block;
   }
   .hint-box{
     background:#E4F1F7;
@@ -239,6 +241,22 @@
     font-style: normal;
   }
 
+  .lisc-box ul{
+    margin: 0;
+    padding-left: 20px;
+  }
+  .lisc-box li{
+    margin-bottom: 6px;
+  }
+
+  .review-item{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+  .review-item .quote-box{ margin: 10px 0 16px; }
 
   .visually-hidden{
     position:absolute; width:1px; height:1px;
@@ -277,7 +295,8 @@ const recallBank = [
       "Suppliers, customers, and competitors"
     ],
     correct: 0,
-    explanation: "A strategic decision is judged by its size (resources committed), scope (how much of the business it affects) and timeframe (how long it will take to see results)."
+    explanation: "A strategic decision is judged by its size (resources committed), scope (how much of the business it affects) and timeframe (how long it will take to see results).",
+    hint: "Think about what makes a decision 'big picture' rather than day-to-day - it's judged on three separate dimensions."
   },
   {
     prompt: "Which level of management is typically responsible for tactical decisions?",
@@ -288,7 +307,8 @@ const recallBank = [
       "Shareholders"
     ],
     correct: 1,
-    explanation: "Tactical decisions are at the level between strategy and daily operations, so they're usually made by middle management. This is where strategic goals are implemented through departmental action."
+    explanation: "Tactical decisions are at the level between strategy and daily operations, so they're usually made by middle management. This is where strategic goals are implemented through departmental action.",
+    hint: "This sits between top-level strategy and day-to-day operations - who's in the middle?"
   },
   {
     prompt: "Which of these is a potential positive impact of tariffs on a domestic business?",
@@ -299,7 +319,8 @@ const recallBank = [
       "They reduce the cost of imported raw materials"
     ],
     correct: 2,
-    explanation: "Tariffs raise the price of imported goods, which can protect local businesses from cheaper overseas competition. However, this often comes at a cost to consumers, importers, and foreign businesses. "
+    explanation: "Tariffs raise the price of imported goods, which can protect local businesses from cheaper overseas competition. However, this often comes at a cost to consumers, importers, and foreign businesses. ",
+    hint: "Think about who benefits when imported goods become more expensive."
   },
   {
     prompt: "Which of the following is an example of an external factor affecting a business?",
@@ -310,7 +331,8 @@ const recallBank = [
       "An outdated internal IT system"
     ],
     correct: 0,
-    explanation: "External factors are outside of the business's control. Government regulation is an example of this. The other options are internal issues the business itself could fix."
+    explanation: "External factors are outside of the business's control. Government regulation is an example of this. The other options are internal issues the business itself could fix.",
+    hint: "Ask yourself: can the business directly control or fix this itself?"
   },
   {
     prompt: "In the context of a strategic decision, what does \"scope\" refer to?",
@@ -321,7 +343,8 @@ const recallBank = [
       "Who approved the decision"
     ],
     correct: 1,
-    explanation: "Scope is about reach, i.e. whether a decision affects one department or the whole organisation. Timeframe covers duration, and size covers resources."
+    explanation: "Scope is about reach, i.e. whether a decision affects one department or the whole organisation. Timeframe covers duration, and size covers resources.",
+    hint: "Scope is about breadth and reach, not time or money."
   },
   {
     prompt: "What best distinguishes a strategic decision from a tactical decision?",
@@ -332,7 +355,8 @@ const recallBank = [
       "There is no real difference between them"
     ],
     correct: 0,
-    explanation: "Strategic decisions shape the long-term direction of the whole business, while tactical decisions are shorter-term and usually confined to a department."
+    explanation: "Strategic decisions shape the long-term direction of the whole business, while tactical decisions are shorter-term and usually confined to a department.",
+    hint: "Think about scale and timeframe - whole business vs one department."
   }
 ];
 
@@ -346,7 +370,8 @@ const maoriBank = [
       "The underlying purpose or reason behind an action"
     ],
     correct: 0,
-    explanation: "Kaitiakitanga refers to guardianship: looking after resources, people, and the environment responsibly, often with consideration of impacts on future generations."
+    explanation: "Kaitiakitanga refers to guardianship: looking after resources, people, and the environment responsibly, often with consideration of impacts on future generations.",
+    hint: "Think 'guardian'."
   },
   {
     prompt: "What does Manaakitanga mean?",
@@ -357,7 +382,8 @@ const maoriBank = [
       "Prestige and authority held by a person or group"
     ],
     correct: 1,
-    explanation: "Manaakitanga is about hospitality and care: the way a business treats its customers, staff, and community."
+    explanation: "Manaakitanga is about hospitality and care: the way a business treats its customers, staff, and community.",
+    hint: "Think about how you'd treat a guest in your home."
   },
   {
     prompt: "What does Whanaungatanga mean?",
@@ -368,7 +394,8 @@ const maoriBank = [
       "Customary protocols that guide behaviour"
     ],
     correct: 0,
-    explanation: "Whanaungatanga is about relationships and connection. It is relevant to how a business builds trust with staff, customers, and its wider community."
+    explanation: "Whanaungatanga is about relationships and connection. It is relevant to how a business builds trust with staff, customers, and its wider community.",
+    hint: "Think about family and connection between people."
   },
   {
     prompt: "What does Pūtake mean?",
@@ -379,7 +406,8 @@ const maoriBank = [
       "The underlying purpose or reason for a decision or action"
     ],
     correct: 3,
-    explanation: "Pūtake refers to the underlying purpose or reason behind a decision. This is the 'why' driving a business's actions."
+    explanation: "Pūtake refers to the underlying purpose or reason behind a decision. This is the 'why' driving a business's actions.",
+    hint: "Think 'why', not 'how'."
   },
   {
     prompt: "What does Tikanga mean?",
@@ -390,7 +418,8 @@ const maoriBank = [
       "Relationships and connection between people"
     ],
     correct: 2,
-    explanation: "Tikanga refers to customary practices and protocols. It is the accepted 'right way' of doing things within a cultural context. It is an important part of cultural intelligence. "
+    explanation: "Tikanga refers to customary practices and protocols. It is the accepted 'right way' of doing things within a cultural context. It is an important part of cultural intelligence. ",
+    hint: "Think about the 'right way of doing things'."
   },
   {
     prompt: "What does Mana mean?",
@@ -401,7 +430,8 @@ const maoriBank = [
       "Guardianship of resources"
     ],
     correct: 1,
-    explanation: "Mana refers to authority, prestige, and standing. Mana is something a business can build or damage through its actions and reputation."
+    explanation: "Mana refers to authority, prestige, and standing. Mana is something a business can build or damage through its actions and reputation.",
+    hint: "Think about respect and standing that can be built or lost."
   },
   {
     prompt: "What does Rangatiratanga mean?",
@@ -412,7 +442,8 @@ const maoriBank = [
       "Self-determination and the right to exercise leadership or authority"
     ],
     correct: 3,
-    explanation: "Rangatiratanga refers to self-determination and leadership."
+    explanation: "Rangatiratanga refers to self-determination and leadership.",
+    hint: "Think about leadership and the right to self-govern."
   }
 ];
 
@@ -426,7 +457,8 @@ const businessBank = [
       "A legal requirement imposed by government"
     ],
     correct: 1,
-    explanation: "A strategic response is a considered action to address the impact of an external factor. It is evaluated by size, scope, and timeframe."
+    explanation: "A strategic response is a considered action to address the impact of an external factor. It is evaluated by size, scope, and timeframe.",
+    hint: "Think about the three factors used to judge any strategic decision."
   },
   {
     prompt: "What is an \"external factor\"?",
@@ -437,7 +469,8 @@ const businessBank = [
       "A marketing strategy used to attract customers"
     ],
     correct: 1,
-    explanation: "External factors originate outside the business and are largely beyond its control. The business can only respond to external factors, not prevent or create them."
+    explanation: "External factors originate outside the business and are largely beyond its control. The business can only respond to external factors, not prevent or create them.",
+    hint: "Ask: can the business control this factor directly?"
   },
   {
     prompt: "What is a \"contingency plan\"?",
@@ -448,7 +481,8 @@ const businessBank = [
       "A type of employment contract"
     ],
     correct: 2,
-    explanation: "A contingency plan is prepared ahead of time so a business can respond quickly if an unexpected event, like an external shock, occurs."
+    explanation: "A contingency plan is prepared ahead of time so a business can respond quickly if an unexpected event, like an external shock, occurs.",
+    hint: "Think about planning ahead for the unexpected, before it happens."
   },
   {
     prompt: "What does \"diversification\" mean as a strategic response?",
@@ -459,7 +493,8 @@ const businessBank = [
       "Closing underperforming branches"
     ],
     correct: 1,
-    explanation: "Diversification means expanding into new products or markets, which spreads risk so the business isn't overly dependent on one area."
+    explanation: "Diversification means expanding into new products or markets, which spreads risk so the business isn't overly dependent on one area.",
+    hint: "Think about spreading risk across different products or markets."
   },
   {
     prompt: "What does Corporate Social Responsibility mean?",
@@ -470,7 +505,8 @@ const businessBank = [
       "A tax paid by businesses operating internationally"
     ],
     correct: 2,
-    explanation: "Corporate Social Responsibility means a business weighs up the ethical, social, and environmental effects of its decisions. They do not just focus on the financial effects."
+    explanation: "Corporate Social Responsibility means a business weighs up the ethical, social, and environmental effects of its decisions. They do not just focus on the financial effects.",
+    hint: "Think about more than just profit - who and what else is affected?"
   }
 ];
 
@@ -480,6 +516,7 @@ const scenarios = [
     context: "KMD Brands Limited (which owns Kathmandu) is dually listed on the NZX and ASX.",
     factor: "A new competitor enters the market.",
     prompt: "What is a potential strategic response for KMD Brands Limited to this external factor?",
+    hint: "Consider which response reduces reliance on a single product line without starting a price war.",
     options: [
       { text: "Do nothing", level: "Not Achieved", explanation: "Taking no action means the business risks losing market share, with no strategic reasoning behind it." },
       { text: "Diversify your product offering", level: "Excellence", explanation: "Broadening the product range reduces reliance on a single product line and gives customers reasons to stay, which directly addresses new competition without instigating a price war." },
@@ -489,6 +526,7 @@ const scenarios = [
     correctIndex: 1,
     bonus: {
       prompt: "Why is diversifying the product offering generally a stronger response than increasing prices when a new competitor enters?",
+      hint: "Think about what could push customers away versus what helps retain them.",
       options: [
         "Because it reduces reliance on the threatened product line, while a price increase could push customers toward the new competitor depending on their prices and positioning",
         "Because it costs nothing to implement",
@@ -504,6 +542,7 @@ const scenarios = [
     context: "Fisher & Paykel Healthcare Corporation Limited is a NZ-registered company operating and selling internationally.",
     factor: "Another pandemic occurs.",
     prompt: "What is a potential strategic response for Fisher & Paykel Healthcare to this external factor?",
+    hint: "Think about which response best matches a genuine surge in demand, and consider reputation.",
     options: [
       { text: "Increase production", level: "Excellence", explanation: "This meets a genuine surge in demand for healthcare products and reflects manaakitanga (supporting the wider community), but it will raise costs initially." },
       { text: "Increase prices", level: "Achieved", explanation: "A relatively safe option only if increases stay modest, as pushing prices too high during a health crisis risks reputational damage." },
@@ -513,6 +552,7 @@ const scenarios = [
     correctIndex: 0,
     bonus: {
       prompt: "Why might increasing prices during a pandemic carry more risk for Fisher & Paykel Healthcare than increasing production?",
+      hint: "Think about ethics and reputation, not just short-term profit.",
       options: [
         "Because it could damage brand reputation and appear opportunistic during a health crisis",
         "Because prices for healthcare products are fixed by law",
@@ -528,6 +568,7 @@ const scenarios = [
     context: "Mainfreight Limited is a NZ-registered company operating internationally.",
     factor: "New emissions regulations mean transport companies must pay higher taxes (RUCs) based on their emissions.",
     prompt: "What is a potential strategic response for Mainfreight Limited to this external factor?",
+    hint: "Consider which option balances cost against cash flow over time, rather than all at once.",
     options: [
       { text: "Do nothing - absorb the extra cost", level: "Achieved", explanation: "This is the easiest option but doesn't address the underlying issue and leaves the business exposed to rising costs long-term." },
       { text: "Spend immediately on low-emission vehicles", level: "Merit", explanation: "This supports long-term sustainability but is costly upfront and could put pressure on cash flow." },
@@ -537,6 +578,7 @@ const scenarios = [
     correctIndex: 2,
     bonus: {
       prompt: "Why is replacing trucks with low-emission vehicles as they're decommissioned often the strongest response here?",
+      hint: "Think about spreading an investment over time rather than paying for it all at once.",
       options: [
         "Because it balances the cost of transition against cash flow, spreading the investment over time",
         "Because it avoids the new regulations altogether",
@@ -592,15 +634,15 @@ function buildQuiz(){
 
   const recallSteps = pick(recallBank, 3).map(q => {
     const s = shuffleOptions(q.options, q.correct);
-    return { type: "main", section: "recall", scoreKey: "recall", prompt: q.prompt, options: s.options, correctIndex: s.correctIndex, explanation: q.explanation };
+    return { type: "main", section: "recall", scoreKey: "recall", prompt: q.prompt, options: s.options, correctIndex: s.correctIndex, explanation: q.explanation, hint: q.hint };
   });
   const maoriSteps = pick(maoriBank, 3).map(q => {
     const s = shuffleOptions(q.options, q.correct);
-    return { type: "main", section: "maori", scoreKey: "maori", prompt: q.prompt, options: s.options, correctIndex: s.correctIndex, explanation: q.explanation };
+    return { type: "main", section: "maori", scoreKey: "maori", prompt: q.prompt, options: s.options, correctIndex: s.correctIndex, explanation: q.explanation, hint: q.hint };
   });
   const businessSteps = pick(businessBank, 3).map(q => {
     const s = shuffleOptions(q.options, q.correct);
-    return { type: "main", section: "business", scoreKey: "business", prompt: q.prompt, options: s.options, correctIndex: s.correctIndex, explanation: q.explanation };
+    return { type: "main", section: "business", scoreKey: "business", prompt: q.prompt, options: s.options, correctIndex: s.correctIndex, explanation: q.explanation, hint: q.hint };
   });
 
   const scenarioSteps = [];
@@ -615,7 +657,8 @@ function buildQuiz(){
       prompt: sc.prompt, options: s.options, correctIndex: s.correctIndex,
       levels: levelByNewIndex.map(o => o.level),
       explanations: levelByNewIndex.map(o => o.explanation),
-      context: contextInfo
+      context: contextInfo,
+      hint: sc.hint
     });
 
     const bonusShuffled = shuffleOptions(sc.bonus.options, sc.bonus.correct);
@@ -623,7 +666,8 @@ function buildQuiz(){
       type: "bonus", scoreKey: "bonus",
       prompt: sc.bonus.prompt, options: bonusShuffled.options, correctIndex: bonusShuffled.correctIndex,
       explanation: sc.bonus.explanation,
-      context: contextInfo
+      context: contextInfo,
+      hint: sc.bonus.hint
     });
   });
 
@@ -654,7 +698,20 @@ function renderIntro(){
   app.innerHTML = `
     <h2>Practice quiz: 3.2 External Factors</h2>
     <p>Twelve questions covering recall, Māori business concepts, business knowledge, and strategic responses to real NZ company scenarios.</p>
-    <p class="muted small">This is anonymous practice. Nothing is saved or recorded, and there's no time limit. You can move back and forward through your answers at any point to review the answers.</p>
+
+    <div class="quote-box lisc-box">
+      <p style="margin-bottom:12px;"><strong>Learning Intention:</strong> To understand and apply Māori business concepts and business knowledge when evaluating strategic responses to external factors.</p>
+      <p style="margin-bottom:8px;"><strong>Success Criteria:</strong></p>
+      <ul>
+        <li>I understand Māori business concepts.</li>
+        <li>I understand business knowledge.</li>
+        <li>I can identify the most appropriate strategic response to an external factor.</li>
+        <li>I can identify positive and negative impacts of a strategic response.</li>
+        <li>I understand how to justify my responses.</li>
+      </ul>
+    </div>
+
+    <p class="muted small">This is anonymous practice. Nothing is saved or recorded, and there's no time limit. You can move back and forward through your answers, use hints if you're stuck, and review everything again at the end.</p>
     <div class="btn-row" style="justify-content:flex-start;">
       <button class="btn" id="startBtn">Start quiz</button>
     </div>
@@ -691,9 +748,18 @@ function renderStep(i){
         <strong>${step.context.company}</strong><br>
         <span class="small">${step.context.context}</span><br><br>
         <em>External factor: ${step.context.factor}</em>
+        <p style="margin:14px 0 0; font-weight:600;">${step.prompt}</p>
       </div>
     `;
   }
+
+  const hintHtml = step.hint
+    ? `<button type="button" class="hint-toggle" id="hintToggle">💡 Show hint</button><div class="hint-box" id="hintBox" style="display:none;">${step.hint}</div>`
+    : "";
+
+  const legendHtml = step.context
+    ? `<legend class="visually-hidden">${step.prompt}</legend>`
+    : `<legend>${step.prompt}</legend>`;
 
   app.innerHTML = `
     <div class="progress-label">
@@ -707,13 +773,24 @@ function renderStep(i){
     ${contextHtml}
     <div>
       <fieldset>
-        <legend>${step.prompt}</legend>
+        ${legendHtml}
+        ${hintHtml}
         <div id="optionsWrap"></div>
       </fieldset>
       <div class="btn-row" id="actionRow"></div>
     </div>
     <div id="feedbackWrap"></div>
   `;
+
+  if(step.hint){
+    const hintBtn = document.getElementById('hintToggle');
+    const hintBox = document.getElementById('hintBox');
+    hintBtn.addEventListener('click', () => {
+      const showing = hintBox.style.display !== 'none';
+      hintBox.style.display = showing ? 'none' : 'block';
+      hintBtn.textContent = showing ? '💡 Show hint' : '💡 Hide hint';
+    });
+  }
 
   const wrap = document.getElementById('optionsWrap');
   step.options.forEach((optText, idx) => {
@@ -793,17 +870,19 @@ function showFeedback(step, chosenIndex, isCorrect, i){
   const levelChip = isScenarioMain ? `<span class="level-chip">${step.levels[chosenIndex]}</span>` : "";
   const isLastStep = i === steps.length - 1;
 
- let headText;
+  let headText;
 
-if(isBonus) {
-  headText = isCorrect ? '⭐ Bonus point earned' : 'No bonus point this time';
-} else if(isCorrect) {
-  headText = 'Perfect!';
-} else if(isScenarioMain && step.levels[chosenIndex] === 'Not Achieved') {
-  headText = 'No - Not Achieved';
-} else {
-  headText = 'Good attempt, but not quite.';
-}
+  if(isBonus) {
+    headText = isCorrect ? '⭐ Bonus point earned' : 'No bonus point this time';
+  } else if(isCorrect) {
+    headText = 'Perfect!';
+  } else if(isScenarioMain){
+    // Achieved/Merit responses are reasonable strategic thinking, just not the strongest option -
+    // "On track" reflects that, while Not Achieved responses keep language similar to "not quite".
+    headText = step.levels[chosenIndex] === 'Not Achieved' ? 'Not quite' : 'On track';
+  } else {
+    headText = 'Good attempt, but not quite.';
+  }
 
   const nextLabel = isLastStep ? 'See my results' : (isScenarioMain ? 'Continue' : 'Next question');
 
@@ -890,10 +969,63 @@ function renderSummary(){
     <p style="margin-top:20px;">${guidance}</p>
     <p class="small muted">Remember: getting an answer right here is a good sign, but the exam asks you to explain your reasoning in writing. Use this to check your knowledge, then practise writing full responses to scenarios like these.</p>
     <div class="btn-row" style="justify-content:flex-start;">
+      <button class="btn secondary" id="reviewBtn">📋 Review my answers</button>
       <button class="btn" id="restartBtn">Try another mix of questions</button>
     </div>
   `;
   document.getElementById('restartBtn').addEventListener('click', buildQuiz);
+  document.getElementById('reviewBtn').addEventListener('click', renderReview);
+}
+
+function renderReview(){
+  const itemsHtml = steps.map((step, i) => {
+    const ans = stepAnswers[i];
+    const isBonus = step.type === "bonus";
+    const isScenarioMain = step.type === "main" && step.section === "scenario";
+    const tagLabel = isBonus ? "⭐ Bonus - justify it" : sectionLabel(step.section);
+    const yourAnswerText = step.options[ans.chosenIndex];
+    const correctAnswerText = step.options[step.correctIndex];
+    const explanation = isScenarioMain ? step.explanations[ans.chosenIndex] : step.explanation;
+    const levelChip = isScenarioMain ? `<span class="level-chip">${step.levels[ans.chosenIndex]}</span>` : "";
+
+    let contextHtml = "";
+    if(step.context){
+      contextHtml = `
+        <div class="quote-box">
+          <strong>${step.context.company}</strong><br>
+          <span class="small">${step.context.context}</span><br><br>
+          <em>External factor: ${step.context.factor}</em>
+          <p style="margin:14px 0 0; font-weight:600;">${step.prompt}</p>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="review-item">
+        <span class="section-tag">${tagLabel}</span>
+        ${contextHtml}
+        ${!step.context ? `<h3>${step.prompt}</h3>` : ""}
+        <p>
+          <strong>Your answer:</strong> ${yourAnswerText} ${levelChip}
+          ${ans.isCorrect ? '<span style="color:var(--accent-dark);">✅ Correct</span>' : '<span style="color:var(--wrong);">❌ Not the best answer</span>'}
+        </p>
+        ${!ans.isCorrect ? `<p><strong>Best response:</strong> ${correctAnswerText}</p>` : ""}
+        <p class="small muted">${explanation}</p>
+      </div>
+    `;
+  }).join("");
+
+  app.innerHTML = `
+    <h2>📋 Review your answers</h2>
+    <p class="muted">Every question from this attempt, with your answer and the explanation, in the order you saw them.</p>
+    ${itemsHtml}
+    <div class="btn-row" style="justify-content:flex-start;">
+      <button class="btn secondary" id="backToSummaryBtn">◀ Back to results</button>
+      <button class="btn" id="restartBtn2">Try another mix of questions</button>
+    </div>
+  `;
+  document.getElementById('backToSummaryBtn').addEventListener('click', renderSummary);
+  document.getElementById('restartBtn2').addEventListener('click', buildQuiz);
 }
 
 /* ---------------------------------------------------------
