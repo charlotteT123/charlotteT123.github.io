@@ -607,7 +607,6 @@ function pick(arr, n){
   return shuffle(arr).slice(0, n);
 }
 
-//Shuffle an options array while tracking the correct index. This is so the students don't get the same mix of questions. 
 function shuffleOptions(options, correctIndex){
   const withFlag = options.map((opt, i) => ({ opt, isCorrect: i === correctIndex }));
   const shuffled = shuffle(withFlag);
@@ -697,10 +696,10 @@ const app = document.getElementById('app');
 function renderIntro(){
   app.innerHTML = `
     <h2>Practice quiz: 3.2 External Factors</h2>
-    <p>Twelve questions covering recall, Māori business concepts, business knowledge, and strategic responses to real NZ company scenarios.</p>
+    <p>Twelve questions covering business terminology recall, Māori business concepts, business knowledge, and strategic responses to potentially real NZ company scenarios.</p>
 
     <div class="quote-box lisc-box">
-      <p style="margin-bottom:12px;"><strong>Learning Intention:</strong> To understand and apply Māori business concepts and business knowledge when evaluating strategic responses to external factors.</p>
+      <p style="margin-bottom:12px;"><strong>Learning Intention:</strong> To understand and apply business knowledge when evaluating strategic responses to external factors.</p>
       <p style="margin-bottom:8px;"><strong>Success Criteria:</strong></p>
       <ul>
         <li>I understand Māori business concepts.</li>
@@ -711,7 +710,7 @@ function renderIntro(){
       </ul>
     </div>
 
-    <p class="muted small">This is anonymous practice. Nothing is saved or recorded, and there's no time limit. You can move back and forward through your answers, use hints if you're stuck, and review everything again at the end.</p>
+    <p class="muted small">This is anonymous practice. Nothing is saved or recorded. You can move back and forward through your answers, use hints if you're stuck, and review everything at the end.</p>
     <div class="btn-row" style="justify-content:flex-start;">
       <button class="btn" id="startBtn">Start quiz</button>
     </div>
@@ -722,9 +721,9 @@ function renderIntro(){
 }
 
 function sectionLabel(section){
-  if(section === "recall") return "🧠 Recall";
+  if(section === "recall") return "🧠 Recall"; 
   if(section === "maori") return "🌿 Māori Concepts";
-  if(section === "business") return "💼 Business Knowledge";
+  if(section === "business") return "💼 Business Knowledge"; //this is most important
   return "🏢 Scenario";
 }
 
@@ -736,7 +735,7 @@ function renderStep(i){
   const pct = Math.round((i / steps.length) * 100);
   const answered = stepAnswers[i];
 
-  const tagLabel = step.type === "main" ? sectionLabel(step.section) : "⭐ Bonus - justify it";
+  const tagLabel = step.type === "main" ? sectionLabel(step.section) : "⭐ Bonus - justify it"; //critical thinking
   const progressText = step.type === "main"
     ? `Question ${step.questionNumber} of ${totalMainQuestions()}`
     : `Bonus round`;
@@ -788,7 +787,7 @@ function renderStep(i){
     hintBtn.addEventListener('click', () => {
       const showing = hintBox.style.display !== 'none';
       hintBox.style.display = showing ? 'none' : 'block';
-      hintBtn.textContent = showing ? '💡 Show hint' : '💡 Hide hint';
+      hintBtn.textContent = showing ? '💡 Show hint' : '💡 Hide hint'; //Not sure how to not have this underlined
     });
   }
 
@@ -877,8 +876,7 @@ function showFeedback(step, chosenIndex, isCorrect, i){
   } else if(isCorrect) {
     headText = 'Perfect!';
   } else if(isScenarioMain){
-    // Achieved/Merit responses are reasonable strategic thinking, just not the strongest option -
-    // "On track" reflects that, while Not Achieved responses keep language similar to "not quite".
+    // Achieved/Merit responses are reasonable strategic thinking, just not the strongest option, so they say "on track" but with red text so they aren't overly positive
     headText = step.levels[chosenIndex] === 'Not Achieved' ? 'Not quite' : 'On track';
   } else {
     headText = 'Good attempt, but not quite.';
@@ -912,13 +910,13 @@ function showFeedback(step, chosenIndex, isCorrect, i){
 }
 
 function performanceEmoji(pct){
-  if(pct >= 80) return "🌟";
-  if(pct >= 50) return "👍";
-  return "🌱";
+  if(pct >= 80) return "🌟"; //best
+  if(pct >= 50) return "👍"; //okay
+  return "🌱"; //not so good but you are growing
 }
 
 function renderSummary(){
-  // Core sections - each drawn from its own question bank and scored independently.
+  //Core sections.
   const coreSections = [
     { key: 'recall', label: '🧠 Recall', total: totals.recall },
     { key: 'maori', label: '🌿 Māori Concepts', total: totals.maori },
@@ -1007,7 +1005,7 @@ function renderReview(){
         ${!step.context ? `<h3>${step.prompt}</h3>` : ""}
         <p>
           <strong>Your answer:</strong> ${yourAnswerText} ${levelChip}
-          ${ans.isCorrect ? '<span style="color:var(--accent-dark);">✅ Correct</span>' : '<span style="color:var(--wrong);">❌ Not the best answer</span>'}
+          ${ans.isCorrect ? '<span style="color:var(--accent-dark);">Correct</span>' : '<span style="color:var(--wrong);">Not the best answer</span>'}
         </p>
         ${!ans.isCorrect ? `<p><strong>Best response:</strong> ${correctAnswerText}</p>` : ""}
         <p class="small muted">${explanation}</p>
